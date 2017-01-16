@@ -11,6 +11,7 @@ dependencies:
 
 test:
   override:
-    - docker build --no-cache -t buildtest .
+    - bash ./buildall.sh
     - docker images
-    - docker history buildtest
+    - docker history swerpbox/rutorrent
+    - docker history swerpbox/nginx

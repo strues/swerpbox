@@ -4,6 +4,10 @@ services:
   nginx:
     image: swerpbox/nginx
     # build: ./docker/nginx
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
     links:
       - rutorrent
     depends_on:
@@ -11,19 +15,21 @@ services:
     environment:
       PGID: 1000
       PUID: 1000
-      TZ: "America/Denver"
-    ports:
-      - 80:80
-      - 443:443
     volumes:
-      - ./web/rutorrent:/web/rutorrent:ro
-      - ./ngx/nginx.conf:/etc/nginx/nginx.conf:ro
-      - ./ngx/vhost.d:/etc/nginx/vhost.d:ro
+      - "./web/rutorrent:/web/rutorrent:ro"
+      - "./config/nginx/nginx.conf:/etc/nginx/nginx.conf:ro"
+      - "./config/nginx/vhost.d:/etc/nginx/vhost.d:ro"
     networks:
       - swerpbox
+
   rutorrent:
     #image: swerpbox/rutorrent
     build: ./docker/rutorrent
+    restart: always
+    ports:
+      - "49123:49123"
+      - "49123:49123/udp"
+      - "6881:6881/udp"
     environment:
       PGID: 1000
       PUID: 1000
@@ -31,9 +37,8 @@ services:
     volumes:
       - "./config:/config"
       - "./data:/data"
+      - "./media:/media"
       - "./web:/web"
-    ports:
-      - 49123:49123
     networks:
       - swerpbox
 
