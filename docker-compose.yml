@@ -1,0 +1,46 @@
+version: '2'
+
+services:
+  nginx:
+    image: swerpbox/nginx
+    # build: ./docker/nginx
+    links:
+      - rutorrent
+    depends_on:
+      - rutorrent
+    environment:
+      PGID: 1000
+      PUID: 1000
+      TZ: "America/Denver"
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./web/rutorrent:/web/rutorrent:ro
+      - ./ngx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./ngx/vhost.d:/etc/nginx/vhost.d:ro
+    networks:
+      - swerpbox
+  rutorrent:
+    #image: swerpbox/rutorrent
+    build: ./docker/rutorrent
+    environment:
+      PGID: 1000
+      PUID: 1000
+      TZ: "America/Denver"
+    volumes:
+      - "./config:/config"
+      - "./data:/data"
+      - "./web:/web"
+    ports:
+      - 49123:49123
+    networks:
+      - swerpbox
+
+volumes:
+  rutorrent-data:
+    driver: local
+
+networks:
+  swerpbox:
+    driver: bridge

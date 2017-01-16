@@ -1,0 +1,16 @@
+machine:
+  pre:
+    - curl -sSL https://s3.amazonaws.com/circle-downloads/install-circleci-docker.sh | bash -s -- 1.10.0
+
+  services:
+    - docker
+
+dependencies:
+  override:
+    - docker version
+
+test:
+  override:
+    - docker build --no-cache -t buildtest .
+    - docker images
+    - docker history buildtest

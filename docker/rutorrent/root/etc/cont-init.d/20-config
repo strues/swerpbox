@@ -1,0 +1,110 @@
+#!/usr/bin/with-contenv bash
+
+# make folders
+mkdir -p \
+  /config{/log/rtorrent,/log/rutorrent,/.irssi/,/rtorrent/session} \
+  /data{/complete,/downloading,/sessions,/rtwatch} \
+	/run/php
+
+if [[ ! -d /detach_sess ]]; then
+  mkdir /detach_sess
+fi
+if [ ! -e "/config/.irssi/scripts" ]; then
+  echo "Autodl not found, installing"
+  mkdir -p /config/.irssi/scripts/autorun && \
+    cd /config/.irssi/scripts && \
+    wget --quiet -O autodl-irssi.zip https://github.com/autodl-community/autodl-irssi/releases/download/community-v1.62/autodl-irssi-community-v1.62.zip && \
+    unzip -o autodl-irssi.zip && \
+    rm autodl-irssi.zip && \
+    cp autodl-irssi.pl autorun/ && \
+    mkdir -p /config/.autodl
+
+  echo "[options]
+  gui-server-port = 12354
+  gui-server-password = password" > /config/.autodl/autodl.cfg
+
+  echo "[options]
+  rt-address = 0.0.0.0:5000" > /config/.autodl/autodl2.cfg
+
+  echo "/load perl" > /config/.irssi/startup
+fi
+
+# get updated trackers for irssi-autodl
+wget --quiet -O /tmp/trackers.zip https://github.com/autodl-community/autodl-trackers/archive/master.zip && \
+cd /config/.irssi/scripts/AutodlIrssi/trackers && \
+unzip -q -o -j /tmp/trackers.zip && \
+rm /tmp/trackers.zip
+
+PREV_DIR=$(pwd)
+
+
+# get webui
+[[ ! -d /web/rutorrent/.git ]] && (git clone https://github.com/Novik/ruTorrent.git /web/rutorrent && \
+chown -R swerp:swerp /web/rutorrent && \
+cp /defaults/rutorrent-conf/config.php /web/rutorrent/conf/config.php && \
+echo "
+User-agent: *
+Disallow: /
+" > /web/rutorrent/robots.txt)
+
+# opt out for autoupdates
+[ "$ADVANCED_DISABLEUPDATES" ] && exit 0
+
+# update webui
+cd /web/rutorrent || exit
+git pull
+chown -R swerp:swerp /web/rutorrent
+
+# get rutorrent plugin
+[[ ! -d /web/rutorrent/plugins/autodl-irssi/.git ]] && (git clone https://github.com/autodl-community/autodl-rutorrent.git /web/rutorrent/plugins/autodl-irssi && \
+chown -R swerp:swerp /web/rutorrent/plugins/autodl-irssi)
+
+[[ ! -e /config/rtorrent/rtorrent.rc ]] && \
+  cp /defaults/rtorrent.rc /config/rtorrent/rtorrent.rc
+
+# delete lock file if exists
+[[ -e /config/rtorrent/session/rtorrent.lock ]] && \
+	rm /config/rtorrent/session/rtorrent.lock
+
+[[ ! -e /root/.autodl ]] && ln -s /config/.autodl /root/.autodl
+
+# if [[ ! -d /config/rutorrent/plugins ]]; then
+#   echo "Plugins config folder empty, copying stock plugins."
+#   cp -r /usr/share/webapps/rutorrent/plugins /config/rutorrent/
+# else
+#   echo "Plugin folder found, copying into container."
+#   rm -rf /usr/share/webapps/rutorrent/plugins
+#   cp -r /config/rutorrent/plugins /usr/share/webapps/rutorrent/
+# fi
+
+cd /web/rutorrent/plugins/autodl-irssi || exit
+git pull
+chown -R swerp:swerp /web/rutorrent/plugins/autodl-irssi
+
+echo "
+<?php
+  PORT = 12354;
+  PASSW = "password";
+?>
+" > /web/rutorrent/plugins/autodl-irssi/conf.php && chown swerp:swerp /web/rutorrent/plugins/autodl-irssi/conf.php
+sed -i 's/PORT/$autodlPort/g' /web/rutorrent/plugins/autodl-irssi/conf.php
+sed -i 's/PASSW/$autodlPassword/g' /web/rutorrent/plugins/autodl-irssi/conf.php
+sed -i 's/password/"password"/g' /web/rutorrent/plugins/autodl-irssi/conf.php
+
+rm -rf /web/rutorrent/conf/config.php && cp /defaults/rutorrent-conf/config.php /web/rutorrent/conf/config.php
+
+cd "${PREV_DIR}" || exit
+# permissions
+chown swerp:swerp \
+  /data\
+  /data{/complete,/downloading,/sessions,/rtwatch}
+
+chown -R swerp:swerp \
+  /config \
+  /run
+
+chown swerp:swerp -R /config /detach_sess
+# chown swerp:swerp -R /usr/share/webapps/rutorrent
+chown swerp:swerp -R /web/rutorrent
+
+chown -R swerp:swerp /root/
