@@ -82,7 +82,7 @@ services:
       ADVERTISE_IP: "http://5.9.84.163:32400/"
       PLEX_UID: 1000
       PLEX_GID: 1000
-      CHANGE_CONFIG_DIR_OWNERSHIP: false
+      CHANGE_CONFIG_DIR_OWNERSHIP: "false"
     hostname: swerpbox
     volumes:
       - "./config/plex:/config"
