@@ -44,6 +44,26 @@ services:
     networks:
       - swerpbox
 
+  deluge:
+    # image: swerpbox/deluge
+    build: ./docker/deluge
+    restart: always
+    ports:
+      - "58946:58946"
+      - "58946:58946/udp"
+      - "58846:58846"
+      - "8112:8112"
+    environment:
+      PGID: 1000
+      PUID: 1000
+      TZ: "America/Denver"
+    volumes:
+      - "./config/deluge:/config"
+      - "./data:/data"
+      - "./media:/media"
+    networks:
+      - swerpbox
+
 volumes:
   rutorrent-data:
     driver: local
