@@ -27,8 +27,19 @@ uid=1000(swerp) gid=1000(swerp) groups=1000(swerp)
 
 It is crucial to set PGID and PUID variables to the values matching the user running SwerpBox.
 
+# Containers
+
+## Alpine
+[![](https://images.microbadger.com/badges/image/swerpbox/alpine-base.svg)](https://microbadger.com/images/swerpbox/alpine-base "SwerpBox Alpine")  [![](https://images.microbadger.com/badges/version/swerpbox/alpine-base.svg)](https://microbadger.com/images/swerpbox/alpine-base "SwerpBox Alpine")  
+
+
+
+## Ubuntu
+
 
 ## Frontend
+[![](https://images.microbadger.com/badges/image/swerpbox/frontend.svg)](https://microbadger.com/images/swerpbox/frontend "SwerpBox Frontend") [![](https://images.microbadger.com/badges/version/swerpbox/frontend.svg)](https://microbadger.com/images/swerpbox/frontend "SwerpBox Frontend")  
+
 
 Available variables:
 
@@ -39,6 +50,19 @@ Available variables:
 
 ## rTorrent/ruTorrent
 
+[![](https://images.microbadger.com/badges/image/swerpbox/rutorrent.svg)](https://microbadger.com/images/swerpbox/rutorrent "SwerpBox ruTorrent") [![](https://images.microbadger.com/badges/version/swerpbox/rutorrent.svg)](https://microbadger.com/images/swerpbox/rutorrent "SwerpBox ruTorrent")  
+
+
+> ruTorrent and rTorrent with Autodl-Irssi running on Alpine Linux. Compiled with Media Info
+
+Includes PHP7 and Nginx 1.10.5.
+
+Volumes:
+
+- `./data:/data`: Where your torrent data is saved.
+- `./logs:/logs`: Logs for nginx, php and rTorrent.
+- `./config:/config`: Configs for php, nginx, rTorrent, irssi, and autodl.
+
 Available variables:
 
  - `TZ`: Your timezone. Default: **America/Denver**
@@ -46,10 +70,9 @@ Available variables:
  - `PGID`: User group id. Default: **1000**
 
 ## Deluge
+[![](https://images.microbadger.com/badges/image/swerpbox/deluge.svg)](https://microbadger.com/images/swerpbox/deluge "SwerpBox Deluge") [![](https://images.microbadger.com/badges/version/swerpbox/deluge.svg)](https://microbadger.com/images/swerpbox/deluge "SwerpBox Deluge")
 
-This container runs the Deluge BitTorrent daemon and the web ui. To learn more, visit the [Deluge website](http://deluge-torrent.org).
-
-The [LtConfig](https://github.com/ratanakvlun/deluge-ltconfig) plugin is installed by default.
+> This container runs the Deluge BitTorrent daemon and the web ui. To learn more, visit the [Deluge website](http://deluge-torrent.org).
 
 Available variables:
 

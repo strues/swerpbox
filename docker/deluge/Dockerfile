@@ -26,7 +26,6 @@ RUN \
 # cleanup
  apk del --purge build-dependencies && rm -rf /root/.cache
 
-COPY ltConfig.egg /config/plugins/
 # add local files
 COPY rootfs/ /
 

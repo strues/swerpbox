@@ -3,8 +3,6 @@ MAINTAINER Steven Truesdell <steven@strues.io>
 
 ARG BUILD_DATE
 ARG VERSION
-ARG S6_LOC="https://github.com/just-containers/s6-overlay/releases/download/v1.18.1.5/s6-overlay-amd64.tar.gz"
-ARG FILEBOT_LOC="https://app.filebot.net/download.php?type=deb&arch=amd64&version=4.7.7"
 LABEL build_version="SwerpBox Filebot v:- ${VERSION} Built:- ${BUILD_DATE}"
 
 ENV DEBIAN_FRONTEND noninteractive
