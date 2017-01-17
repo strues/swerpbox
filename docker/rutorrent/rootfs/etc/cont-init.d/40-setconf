@@ -3,7 +3,7 @@
 # make folders
 mkdir -p /config/tmp /detach_sess
 
-[[ ! -L /home/swerp/.autodl ]] && ln -s /config/autodl /home/swerp/.autodl
+[[ ! -L /home/swerp/autodl ]] && ln -s /config/autodl /home/swerp/autodl
 
 [[ ! -L /config/irssi/scripts/autorun/autodl-irssi.pl ]] && \
   ln -s /config/irssi/scripts/autodl-irssi.pl /config/irssi/scripts/autorun/autodl-irssi.pl
