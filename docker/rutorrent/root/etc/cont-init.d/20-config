@@ -2,108 +2,58 @@
 
 # make folders
 mkdir -p \
-  /config{/log/rtorrent,/log/rutorrent,/.irssi/,/rtorrent/session} \
-  /data{/complete,/downloading,/sessions,/rtwatch} \
-	/run/php
+	/config{/log/nginx,/log/rtorrent,/log/rutorrent,/nginx,/php,/rtorrent/rtorrent_sess,/rutorrent/settings/users} \
+	/config/rutorrent/profiles{/settings,/torrents,/users,/tmp} \
+	/data{/complete,/downloading,/rtwatch} \
+	/run{/nginx,/php} \
+	/var/lib/nginx/tmp/client_body
 
-# Create /detach dir if its not found. if it is skip it
-if [[ ! -d /detach_sess ]]; then
-  mkdir /detach_sess
-fi
-
-# Check for irssi
-# if not found, get it
-if [ ! -e "/config/.irssi/scripts" ]; then
-  echo "Autodl not found, installing"
-  mkdir -p /config/.irssi/scripts/autorun && \
-    cd /config/.irssi/scripts && \
-    wget --quiet -O autodl-irssi.zip https://github.com/autodl-community/autodl-irssi/releases/download/community-v1.62/autodl-irssi-community-v1.62.zip && \
-    unzip -o autodl-irssi.zip && \
-    rm autodl-irssi.zip && \
-    cp autodl-irssi.pl autorun/ && \
-    mkdir -p /config/.autodl
-
-  echo "[options]
-  gui-server-port = 12354
-  gui-server-password = password" > /config/.autodl/autodl.cfg
-
-  echo "[options]
-  rt-address = 0.0.0.0:5000" > /config/.autodl/autodl2.cfg
-
-  echo "/load perl" > /config/.irssi/startup
-fi
-
-# get updated trackers for irssi-autodl
-wget --quiet -O /tmp/trackers.zip https://github.com/autodl-community/autodl-trackers/archive/master.zip && \
-cd /config/.irssi/scripts/AutodlIrssi/trackers && \
-unzip -q -o -j /tmp/trackers.zip && \
-rm /tmp/trackers.zip
-
+# copy config
 PREV_DIR=$(pwd)
 
-
-# get rutorrent
-[[ ! -d /web/rutorrent/.git ]] && (git clone https://github.com/Novik/ruTorrent.git /web/rutorrent && \
-chown -R swerp:swerp /web/rutorrent && \
-cp /defaults/rutorrent-conf/config.php /web/rutorrent/conf/config.php && \
-cp /defaults/rutorrent-conf/plugins.ini /web/rutorrent/conf/plugins.ini && \
-#
-# Create a robots.txt
-echo "
-User-agent: *
-Disallow: /
-" > /web/robots.txt)
-
-# update rutorrent
-cd /web/rutorrent || exit
-git pull
-chown -R swerp:swerp /web/rutorrent
-
-# get rutorrent autodl-irssi plugin
-[[ ! -d /web/rutorrent/plugins/autodl-irssi/.git ]] && (git clone https://github.com/autodl-community/autodl-rutorrent.git /web/rutorrent/plugins/autodl-irssi && \
-chown -R swerp:swerp /web/rutorrent/plugins/autodl-irssi)
-
-# Copy rtorrent.rc
-[[ ! -e /config/rtorrent/rtorrent.rc ]] && \
-  cp /defaults/rtorrent.rc /config/rtorrent/rtorrent.rc
-
-# delete lock file if exists
-[[ -e /config/rtorrent/session/rtorrent.lock ]] && \
-	rm /config/rtorrent/session/rtorrent.lock
-
-## symlink autodl
-[[ ! -e /root/.autodl ]] && ln -s /config/.autodl /root/.autodl
-
-## configure autodl-irssi
-cd /web/rutorrent/plugins/autodl-irssi || exit
-git pull
-chown -R swerp:swerp /web/rutorrent/plugins/autodl-irssi
-
-echo "<?php
-  PORT = 12354;
-  PASSW = "password";
-?>" > /web/rutorrent/plugins/autodl-irssi/conf.php && chown swerp:swerp /web/rutorrent/plugins/autodl-irssi/conf.php
-sed -i 's/PORT/$autodlPort/g' /web/rutorrent/plugins/autodl-irssi/conf.php
-sed -i 's/PASSW/$autodlPassword/g' /web/rutorrent/plugins/autodl-irssi/conf.php
-sed -i 's/password/"password"/g' /web/rutorrent/plugins/autodl-irssi/conf.php
-
-# fix the out of control socket spam
-sed -i 's/127.0.0.1/0.0.0.0/g' /web/rutorrent/plugins/autodl-irssi/getConf.php
-
-rm -rf /web/rutorrent/conf/config.php && cp /defaults/rutorrent-conf/config.php /web/rutorrent/conf/config.php
+cd /defaults/rutorrent || exit
+	shopt -s globstar nullglob
+	for i in *
+	do
+		[[ ! -e "/config/rutorrent/settings/${i}" ]] && cp -v "${i}" "/config/rutorrent/settings/${i}"
+	done
 
 cd "${PREV_DIR}" || exit
+
+[[ ! -e /config/nginx/nginx.conf ]] && \
+	cp /defaults/nginx.conf /config/nginx/nginx.conf
+
+
+[[ ! -e /config/rtorrent/rtorrent.rc ]] && \
+	cp /defaults/rtorrent.rc /config/rtorrent/rtorrent.rc
+cp -pr /config/rutorrent/settings/* /web/rutorrent/conf/
+
+if [ ! -e "/config/php/php.ini" ]; then
+	cp /etc/php7/php.ini /config/php/php.ini
+	sed -i -e 's/\(register_argc_argv .*=\).*/\1 On/g' /config/php/php.ini
+fi
+
+cp /config/php/php.ini /etc/php7/php.ini
+
+# create symlink for webui files
+[[ ! -e /var/www/localhost/rutorrent ]] && ln -s \
+/web/rutorrent /var/www/localhost/rutorrent
+
+# delete lock file if exists
+[[ -e /config/rtorrent/rtorrent_sess/rtorrent.lock ]] && \
+	rm /config/rtorrent/rtorrent_sess/rtorrent.lock
+
 # permissions
 chown swerp:swerp \
-  /data\
-  /data{/complete,/downloading,/sessions,/rtwatch}
+	/data \
+	/data{/complete,/downloading,/rtwatch}
 
 chown -R swerp:swerp \
-  /config \
-  /run
+	/config \
+	/run \
+	/web/rutorrent \
+	/var/lib/nginx \
+	/var/www/localhost/rutorrent
 
-chown swerp:swerp -R /config /detach_sess
-# chown swerp:swerp -R /usr/share/webapps/rutorrent
-chown swerp:swerp -R /web/rutorrent
-
-chown -R swerp:swerp /root/
+chmod -R 755 /config/rutorrent/profiles
+chmod 644 /etc/logrotate.d/*

@@ -1,9 +1,9 @@
 version: '2'
 
 services:
-  nginx:
-    image: swerpbox/nginx
-    # build: ./docker/nginx
+  frontend:
+    # image: swerpbox/frontend
+    build: ./docker/frontend
     restart: always
     ports:
       - "80:80"
@@ -15,11 +15,11 @@ services:
     environment:
       PGID: 1000
       PUID: 1000
+      USERNAME: swerp
+      PASSWORD: swerp
     volumes:
-      - "./web/rutorrent:/web/rutorrent:ro"
-      - "./config/nginx/.htpasswd:/etc/nginx/.htpasswd:ro"
-      - "./config/nginx/nginx.conf:/etc/nginx/nginx.conf:ro"
-      - "./config/nginx/vhost.d:/etc/nginx/vhost.d:ro"
+      - "./config:/config"
+
     networks:
       - swerpbox
 
@@ -31,6 +31,8 @@ services:
       - "49123:49123"
       - "49123:49123/udp"
       - "6881:6881/udp"
+      - "5000:5000"
+      - "41812:41812"
     environment:
       PGID: 1000
       PUID: 1000
@@ -39,7 +41,6 @@ services:
       - "./config:/config"
       - "./data:/data"
       - "./media:/media"
-      - "./web:/web"
     networks:
       - swerpbox
 

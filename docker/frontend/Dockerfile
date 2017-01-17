@@ -1,4 +1,4 @@
-FROM swerpbox/alpine-base:3.5
+FROM swerpbox/base
 MAINTAINER Steven Truesdell <steven@strues.io>
 
 ENV NGINX_VERSION 1.11.8
@@ -109,7 +109,7 @@ RUN GPG_KEYS=B0F4253373F8F6F510D42178520A9993A1C052F8 \
 	&& make install \
 	&& rm -rf /etc/nginx/html/ \
 	&& rm -rf /etc/nginx/conf.d/* \
-	&& mkdir /etc/nginx/conf.d/ \
+	&& mkdir /etc/nginx/vhost.d/ \
 	&& install -m755 objs/nginx-debug /usr/sbin/nginx-debug \
 	&& install -m755 objs/ngx_http_xslt_filter_module-debug.so /usr/lib/nginx/modules/ngx_http_xslt_filter_module-debug.so \
 	&& install -m755 objs/ngx_http_image_filter_module-debug.so /usr/lib/nginx/modules/ngx_http_image_filter_module-debug.so \
@@ -150,5 +150,7 @@ RUN apk add --no-cache apache2-utils openssl
 
 EXPOSE 80 443 5000
 
+COPY files/make-ssl /usr/local/bin
 COPY files/etc/ /etc/
-VOLUME ["/etc/nginx", "/web", "/log", "/var/cache/nginx"]
+
+VOLUME ["/config", "/web", "/data", "/media"]

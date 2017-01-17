@@ -20,6 +20,6 @@ while getopts ":nq" opt; do
 done
 
 docker build -t swerpbox/rutorrent  $ARGS docker/rutorrent  &
-docker build -t swerpbox/nginx      $ARGS docker/nginx      &
+docker build -t swerpbox/frontend      $ARGS docker/frontend      &
 
 wait

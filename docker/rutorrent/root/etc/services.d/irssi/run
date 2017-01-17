@@ -1,9 +1,7 @@
 #!/usr/bin/with-contenv bash
-umask 0002
-export TERM=xterm
 
 if [ -f "/detach_sess/.irssi" ]; then
-  rm -f /detach_sess/.irssi || true
+rm -f /detach_sess/.irssi || true
 sleep 1s
 fi
 

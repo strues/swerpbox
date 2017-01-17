@@ -1,0 +1,16 @@
+#!/usr/bin/with-contenv bash
+
+mkdir -p /config/frontend/certs
+
+htpasswd -cb /etc/nginx/.htpasswd $USERNAME $PASSWORD
+
+${USE_SSL:=false}
+if $USE_SSL ; then
+    echo "include ssl.conf;" >> /etc/nginx/common.conf
+
+    # Create self-signed certificate if using ssl and keys do not exist.
+    # You can always replace these with your own keys later.
+    if [[ ! -f /config/frontend/certs/ssl.key || ! -f /config/frontend/certs/ssl.crt ]]; then
+        ssl-gen swerp
+    fi
+fi

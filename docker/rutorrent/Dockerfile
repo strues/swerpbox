@@ -1,83 +1,121 @@
-FROM swerpbox/php
+FROM swerpbox/base
 
 MAINTAINER Steven Truesdell <steven@strues.io>
 
-ENV MEDIAINFO_VER="0.7.90" \
-    RTORRENT_VER="0.9.6" \
-    LIBTORRENT_VER="0.13.6"
+ARG BUILD_DATE
+ARG VERSION
+ARG RUTORRENT_ADDR="https://github.com/Novik/ruTorrent/archive/master.tar.gz"
+LABEL build_version="SwerpBox v:- ${VERSION} Built:- ${BUILD_DATE}"
 
+ARG MEDIAINF_VER="0.7.90"
+
+# install runtime packages
 RUN \
-  apk add --no-cache  \
-    	--repository http://nl.alpinelinux.org/alpine/edge/main\
-      perl \
-      irssi irssi-perl libxml2-dev perl-dev perl-archive-zip perl-net-ssleay perl-digest-sha1 perl-json perl-html-parser
+ apk add --no-cache \
+        ca-certificates \
+        curl \
+        fcgi \
+        ffmpeg \
+        geoip \
+        gzip \
+        logrotate \
+        nginx \
+        rtorrent \
+	dtach \
+        tar \
+        unrar \
+        unzip \
+        wget \
+	irssi \
+	irssi-perl \
+        libressl-dev \
+	zlib \
+	zlib-dev \
+	libxml2-dev \
+	perl-archive-zip \
+	perl-net-ssleay \
+	perl-digest-sha1 \
+	git \
+        zip && \
+ # php packages
+ apk add --no-cache --repository http://nl.alpinelinux.org/alpine/edge/community \
+        php7 \
+        php7-cgi \
+        php7-fpm \
+        php7-json  \
+        php7-mbstring \
+	php7-sockets \
+        php7-opcache \
+        php7-mcrypt \
+        php7-xmlrpc \
+        php7-pear && \
 
-    RUN apk add --no-cache \
-    	--repository http://nl.alpinelinux.org/alpine/edge/community \
-    	perl-xml-libxml
+# install build packages
+ apk add --no-cache --virtual=build-deps \
+        autoconf \
+        automake \
+        cppunit-dev \
+        curl-dev \
+	perl-dev \
+        file \
+        g++ \
+        gcc \
+        libtool \
+        make \
+        ncurses-dev && \
 
-    RUN apk add --no-cache --repository http://nl.alpinelinux.org/alpine/edge/testing perl-json-xs
-RUN \
-  build_pkgs="build-base libtool zlib-dev libxml2-dev perl-dev automake autoconf wget subversion cppunit-dev ncurses-dev curl-dev" && \
-  runtime_pkgs="ffmpeg dtach git zlib ca-certificates curl gzip tar unzip zip unrar geoip" && \
-  apk add --no-cache --repository http://nl.alpinelinux.org/alpine/edge/community ${build_pkgs} ${runtime_pkgs} && \
-  mkdir -p  /defaults/rutorrent-conf && \
-  cd /tmp \
-  && git clone https://github.com/esmil/mktorrent \
-  && svn checkout http://svn.code.sf.net/p/xmlrpc-c/code/stable xmlrpc-c \
-  && git clone https://github.com/rakshasa/libtorrent.git \
-  && git clone https://github.com/rakshasa/rtorrent.git \
-  && wget http://mediaarea.net/download/binary/mediainfo/${MEDIAINFO_VER}/MediaInfo_CLI_${MEDIAINFO_VER}_GNU_FromSource.tar.gz \
-  && wget http://mediaarea.net/download/binary/libmediainfo0/${MEDIAINFO_VER}/MediaInfo_DLL_${MEDIAINFO_VER}_GNU_FromSource.tar.gz \
-  && tar xzf MediaInfo_DLL_${MEDIAINFO_VER}_GNU_FromSource.tar.gz \
-  && tar xzf MediaInfo_CLI_${MEDIAINFO_VER}_GNU_FromSource.tar.gz \
-  && cd /tmp/mktorrent \
-  && make -j $(getconf _NPROCESSORS_ONLN) \
-  && make install \
-  && cd  /tmp/MediaInfo_DLL_GNU_FromSource \
-  && ./SO_Compile.sh \
-  && cd /tmp/MediaInfo_DLL_GNU_FromSource/ZenLib/Project/GNU/Library \
-  && make -j $(getconf _NPROCESSORS_ONLN) \
-  && make install \
-  && cd /tmp/MediaInfo_DLL_GNU_FromSource/MediaInfoLib/Project/GNU/Library \
-  && make -j $(getconf _NPROCESSORS_ONLN) \
-  && make install \
-  && cd /tmp/MediaInfo_CLI_GNU_FromSource \
-  && ./CLI_Compile.sh \
-  && cd /tmp/MediaInfo_CLI_GNU_FromSource/MediaInfo/Project/GNU/CLI \
-  && make -j $(getconf _NPROCESSORS_ONLN) \
-  && make install
+# install webui
+ mkdir -p /web/rutorrent /defaults/rutorrent && \
+ curl -o /tmp/rutorrent.tar.gz -L ${RUTORRENT_ADDR} && \
 
-  RUN \
-  cd /tmp/xmlrpc-c \
-  && ./configure --prefix=/usr --disable-cplusplus \
-  && make -j $(getconf _NPROCESSORS_ONLN) \
-  && make install \
-  && cd /tmp/libtorrent \
-  && git checkout ${LIBTORRENT_VER} \
-  && ./autogen.sh \
-  && ./configure --prefix=/usr \
-  && make -j $(getconf _NPROCESSORS_ONLN) \
-  && make install \
-  && cd /tmp/rtorrent \
-  && git checkout ${RTORRENT_VER} \
-  && ./autogen.sh \
-  && ./configure --prefix=/usr --with-xmlrpc-c \
-  && make -j $(getconf _NPROCESSORS_ONLN) \
-  && make install && \
-  # install autodl-irssi perl modules
+ tar xf /tmp/rutorrent.tar.gz -C /web/rutorrent --strip-components=1 && \
+
+ mv /web/rutorrent/conf/* /defaults/rutorrent/ && \
+ rm -rf /defaults/rutorrent/users && \
+
+# install autodl-irssi perl modules
  perl -MCPAN -e 'my $c = "CPAN::HandleConfig"; $c->load(doit => 1, autoconfig => 1); $c->edit(prerequisites_policy => "follow"); $c->edit(build_requires_install_policy => "yes"); $c->commit' && \
  curl -L http://cpanmin.us | perl - App::cpanminus && \
 	cpanm HTML::Entities XML::LibXML JSON JSON::XS && \
-  apk del ${build_pkgs} && \
-  rm -rf /tmp/* && \
-  deluser svn && \
-  delgroup svnusers && \
-  echo "export TERM=xterm" >> /etc/profile
 
+# compile mediainfo packages
+ curl -o \
+ /tmp/libmediainfo.tar.gz -L \
+        "http://mediaarea.net/download/binary/libmediainfo0/${MEDIAINF_VER}/MediaInfo_DLL_${MEDIAINF_VER}_GNU_FromSource.tar.gz" && \
+ curl -o \
+ /tmp/mediainfo.tar.gz -L \
+        "http://mediaarea.net/download/binary/mediainfo/${MEDIAINF_VER}/MediaInfo_CLI_${MEDIAINF_VER}_GNU_FromSource.tar.gz" && \
 
+ mkdir -p /tmp/libmediainfo /tmp/mediainfo && \
 
-COPY root /
+ tar xf /tmp/libmediainfo.tar.gz -C \
+        /tmp/libmediainfo --strip-components=1 && \
 
-EXPOSE 5000 6881 49123
-VOLUME /config /data /media /web
+ tar xf /tmp/mediainfo.tar.gz -C \
+        /tmp/mediainfo --strip-components=1 && \
+
+ cd /tmp/libmediainfo && ./SO_Compile.sh && \
+
+ cd /tmp/libmediainfo/ZenLib/Project/GNU/Library && \
+        make -j $(getconf _NPROCESSORS_ONLN) && \
+        make install && \
+
+ cd /tmp/libmediainfo/MediaInfoLib/Project/GNU/Library && \
+        make -j $(getconf _NPROCESSORS_ONLN) && \
+        make install && \
+
+ cd /tmp/mediainfo && ./CLI_Compile.sh && \
+ cd /tmp/mediainfo/MediaInfo/Project/GNU/CLI && \
+        make -j $(getconf _NPROCESSORS_ONLN) && \
+        make install && \
+
+# cleanup
+ apk del --purge build-deps && \
+ rm -rf /tmp/*
+
+# add local files
+COPY root/ /
+
+# ports and volumes
+EXPOSE 443
+VOLUME /config /data /media

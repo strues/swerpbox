@@ -1,4 +1,6 @@
 <?php
-  $autodlPort = 12354;
-  $autodlPassword = "password";
+
+$autodlPort = 41812;
+$autodlPassword = "password";
+
 ?>
