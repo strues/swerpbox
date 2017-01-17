@@ -21,7 +21,7 @@ chown -R swerp:swerp /web/rutorrent/plugins/autodl-irssi/)
 
 # get updated trackers for irssi-autodl
 wget --quiet -O /tmp/trackers.zip https://github.com/autodl-community/autodl-trackers/archive/master.zip && \
-cd /config/.irssi/scripts/AutodlIrssi/trackers && \
+cd /config/irssi/scripts/AutodlIrssi/trackers && \
 unzip -q -o -j /tmp/trackers.zip && \
 rm /tmp/trackers.zip
 
