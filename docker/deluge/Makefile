@@ -1,4 +1,4 @@
-IMAGE = swerpbox/frontend
+IMAGE = swerpbox/deluge
 TAG = latest
 
 clean:

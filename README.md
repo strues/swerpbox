@@ -1,6 +1,9 @@
-# SwerpBox
+# SwerpBox  
 
-SwerpBox, a seedbox and media center combined with the power of  🐳 Docker.  
+[![CircleCI](https://circleci.com/gh/strues/swerpbox.svg?style=svg)](https://circleci.com/gh/strues/swerpbox)
+
+
+> SwerpBox, a seedbox and media center combined with the power of  🐳 Docker.  
 
 
 ## Get Started

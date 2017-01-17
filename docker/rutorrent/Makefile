@@ -1,4 +1,4 @@
-IMAGE = swerpbox/frontend
+IMAGE = swerpbox/rutorrent
 TAG = latest
 
 clean:

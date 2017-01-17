@@ -1,4 +1,4 @@
-IMAGE = swerpbox/frontend
+IMAGE = swerpbox/filebot
 TAG = latest
 
 clean:

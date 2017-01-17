@@ -20,10 +20,13 @@ RUN \
 # install pip packages
  pip install --no-cache-dir -U incremental pip && \
  pip install --no-cache-dir -U crypto mako markupsafe pyopenssl service_identity six twisted zope.interface && \
+ mkdir -p /config/plugins && \
+
 
 # cleanup
  apk del --purge build-dependencies && rm -rf /root/.cache
-
+ 
+COPY ltConfig.egg /config/plugins/
 # add local files
 COPY root/ /
 
