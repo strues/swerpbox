@@ -1,2 +1,2 @@
 #!/usr/bin/with-contenv bash
-exec /usr/sbin/nginx -c /config/nginx/nginx.conf
+exec /usr/sbin/nginx -c /config/rutorrent-nginx/nginx.conf

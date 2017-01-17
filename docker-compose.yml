@@ -67,71 +67,71 @@ services:
       - logs_data
     networks:
       - swerpbox
-  plex:
-    container_name: plex
-    image: plexinc/pms-docker
-    restart: unless-stopped
-    ports:
-      - "32400:32400/tcp"
-      - "3005:3005/tcp"
-      - "8324:8324/tcp"
-      - "32469:32469/tcp"
-      - "1900:1900/udp"
-      - "32410:32410/udp"
-      - "32412:32412/udp"
-      - "32413:32413/udp"
-      - "32414:32414/udp"
-    environment:
-      TZ: "America/Denver"
-      # PLEX_CLAIM: "claim-" # https://www.plex.tv/claim
-      ADVERTISE_IP: "http://5.9.84.163:32400/"
-      PLEX_UID: 1000
-      PLEX_GID: 1000
-      CHANGE_CONFIG_DIR_OWNERSHIP: "false"
-    hostname: swerpbox
-    volumes:
-      - "./config/plex:/config"
-      - "./config/plex/tmp:/transcode"
-      - "./media:/data"
-  plexpy:
-    # image: swerpbox/plexpy
-    build: ./docker/plexpy
-    container_name: plexpy
-    restart: always
-    ports:
-      - "8181:8181"
-    environment:
-      PGID: 1000
-      PUID: 1000
-      TZ: "America/Denver"
-    volumes:
-      - "./config/plex/Library/Application\ Support/Plex\ Media\ Server/Logs/:/logs:ro"
-      - "./config/plexpy:/config"
-    networks:
-      - swerpbox
-    depends_on:
-      - plex
-    links:
-      - plex
-  filebot:
-    container_name: filebot
-    image: swerpbox/filebot
-    # restart: always
-    #build: ./docker/filebot
-    environment:
-      OUTPUT_FOLDER: "/media"
-      INPUT_FOLDER: "/data/complete"
-      ACTION: "hardlink"
-      MUSIC: "n"
-      PGID: 1000
-      PUID: 1000
-      TZ: "America/Denver"
-    volumes:
-      - "./config/filebot:/config"
-      - "./data:/data"
-      - "./media:/media"
-    volumes_from:
-      - logs_data
+  # plex:
+  #   container_name: plex
+  #   image: plexinc/pms-docker
+  #   restart: unless-stopped
+  #   ports:
+  #     - "32400:32400/tcp"
+  #     - "3005:3005/tcp"
+  #     - "8324:8324/tcp"
+  #     - "32469:32469/tcp"
+  #     - "1900:1900/udp"
+  #     - "32410:32410/udp"
+  #     - "32412:32412/udp"
+  #     - "32413:32413/udp"
+  #     - "32414:32414/udp"
+  #   environment:
+  #     TZ: "America/Denver"
+  #     # PLEX_CLAIM: "claim-" # https://www.plex.tv/claim
+  #     ADVERTISE_IP: "http://5.9.84.163:32400/"
+  #     PLEX_UID: 1000
+  #     PLEX_GID: 1000
+  #     CHANGE_CONFIG_DIR_OWNERSHIP: "false"
+  #   hostname: swerpbox
+  #   volumes:
+  #     - "./config/plex:/config"
+  #     - "./config/plex/tmp:/transcode"
+  #     - "./media:/data"
+  # plexpy:
+  #   # image: swerpbox/plexpy
+  #   build: ./docker/plexpy
+  #   container_name: plexpy
+  #   restart: always
+  #   ports:
+  #     - "8181:8181"
+  #   environment:
+  #     PGID: 1000
+  #     PUID: 1000
+  #     TZ: "America/Denver"
+  #   volumes:
+  #     - "./config/plex/Library/Application\ Support/Plex\ Media\ Server/Logs/:/logs:ro"
+  #     - "./config/plexpy:/config"
+  #   networks:
+  #     - swerpbox
+  #   depends_on:
+  #     - plex
+  #   links:
+  #     - plex
+  # filebot:
+  #   container_name: filebot
+  #   # image: swerpbox/filebot
+  #   # restart: always
+  #   build: ./docker/filebot
+  #   environment:
+  #     OUTPUT_FOLDER: "/media"
+  #     INPUT_FOLDER: "/data/complete"
+  #     ACTION: "hardlink"
+  #     MUSIC: "n"
+  #     PGID: 1000
+  #     PUID: 1000
+  #     TZ: "America/Denver"
+  #   volumes:
+  #     - "./config/filebot:/config"
+  #     - "./data:/data"
+  #     - "./media:/media"
+  #   volumes_from:
+  #     - logs_data
 
   logs_data:
     image: tianon/true

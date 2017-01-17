@@ -77,7 +77,7 @@ RUN GPG_KEYS=B0F4253373F8F6F510D42178520A9993A1C052F8 \
 		g++ \
 		cmake \
 	&& mkdir -p /usr/src \
-	&& mkdir -p /var/log/nginx \
+	&& mkdir -p /logs/frontend \
 	&& cd /usr/src \
 	&& git clone https://github.com/google/brotli.git \
 	&& cd brotli \
@@ -145,7 +145,6 @@ RUN GPG_KEYS=B0F4253373F8F6F510D42178520A9993A1C052F8 \
 	&& apk del .gettext \
 	&& mv /tmp/envsubst /usr/local/bin/ \
 	\
-	&& mkdir -p /logs/frontend \
 	# forward request and error logs to docker log collector
 	&& ln -sf /dev/stdout /logs/frontend/nginx-access.log \
 	&& ln -sf /dev/stderr /logs/frontend/nginx-error.log \
