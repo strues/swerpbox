@@ -34,10 +34,10 @@ chown -R swerp:swerp /web/rutorrent/plugins/autodl-irssi
 echo "load perl" > /config/irssi/startup
 
 # symlink autodl/irssi folders to root
-ln -s /config/autodl /root/autodl
-ln -s /config/irssi /root/irssi
-chown -R swerp:swerp /root/autodl
-chown -R swerp:swerp /root/irssi
+ln -s /config/autodl /root/.autodl
+ln -s /config/irssi /root/.irssi
+chown -R swerp:swerp /root/.autodl
+chown -R swerp:swerp /root/.irssi
 
 # update autodl script for irssi
 cd /config/irssi/scripts || exit
