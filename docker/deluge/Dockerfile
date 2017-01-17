@@ -1,4 +1,4 @@
-FROM swerpbox/base
+FROM swerpbox/alpine-base
 
 MAINTAINER Steven Truesdell <steven@strues.io>
 
@@ -20,16 +20,16 @@ RUN \
 # install pip packages
  pip install --no-cache-dir -U incremental pip && \
  pip install --no-cache-dir -U crypto mako markupsafe pyopenssl service_identity six twisted zope.interface && \
- mkdir -p /config/plugins && \
+ mkdir -p /config/plugins /logs/deluge && \
 
 
 # cleanup
  apk del --purge build-dependencies && rm -rf /root/.cache
- 
+
 COPY ltConfig.egg /config/plugins/
 # add local files
-COPY root/ /
+COPY rootfs/ /
 
 # ports and volumes
 EXPOSE 8112 58846 58946 58946/udp
-VOLUME /config /data
+VOLUME ["/config", "/data", "/logs"]

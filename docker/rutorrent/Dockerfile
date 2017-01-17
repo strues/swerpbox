@@ -1,11 +1,10 @@
-FROM swerpbox/base
-
+FROM swerpbox/alpine-base
 MAINTAINER Steven Truesdell <steven@strues.io>
 
 ARG BUILD_DATE
 ARG VERSION
 ARG RUTORRENT_ADDR="https://github.com/Novik/ruTorrent/archive/master.tar.gz"
-LABEL build_version="SwerpBox v:- ${VERSION} Built:- ${BUILD_DATE}"
+LABEL build_version="SwerpBox RuTorrent/rTorrent v:- ${VERSION} Built:- ${BUILD_DATE}"
 
 ARG MEDIAINF_VER="0.7.90"
 
@@ -110,12 +109,11 @@ RUN \
         make install && \
 
 # cleanup
- apk del --purge build-deps && \
- rm -rf /tmp/*
+ apk del --purge build-deps && rm -rf /tmp/*
 
 # add local files
-COPY root/ /
+COPY rootfs/ /
 
 # ports and volumes
 EXPOSE 443
-VOLUME /config /data /media
+VOLUME ["/config", "/data", "/logs"]

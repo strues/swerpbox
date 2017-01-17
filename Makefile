@@ -12,3 +12,6 @@ build-frontend:
 
 build-filebot:
 	cd docker/filebot; make build
+
+build-plexpy:
+	cd docker/plexpy; make build

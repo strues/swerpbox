@@ -1,0 +1,8 @@
+#!/usr/bin/with-contenv bash
+
+# install plexpy
+[[ ! -d "/opt/plexpy/.git" ]] && \
+	git clone --branch "master" https://github.com/JonnyWong16/plexpy.git /opt/plexpy
+
+# permissions
+chown -R swerp:swerp /opt/plexpy

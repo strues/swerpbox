@@ -30,7 +30,7 @@ do
 done
 
 # See http://www.filebot.net/forums/viewtopic.php?t=215 for details on amc
-filebot -script fn:amc -no-xattr --output $OUTPUT_FOLDER --log-file /config/amc.log --action $ACTION --conflict auto \
+filebot -script fn:amc -no-xattr --output $OUTPUT_FOLDER --log-file /logs/filebot/amc.log --action $ACTION --conflict auto \
   -non-strict --def ut_dir=$INPUT_FOLDER ut_kind=multi music=$MUSIC deleteAfterExtract=n clean=y \
   excludeList=/config/amc-exclude-list.txt $SUBTITLE_OPTION \
   movieFormat="$MOVIE_FORMAT" musicFormat="$MUSIC_FORMAT" seriesFormat="$SERIES_FORMAT"

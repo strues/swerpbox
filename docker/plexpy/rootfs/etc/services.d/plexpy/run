@@ -1,0 +1,3 @@
+#!/usr/bin/with-contenv bash
+
+exec s6-setuidgid swerp python /opt/plexpy/PlexPy.py --datadir /config

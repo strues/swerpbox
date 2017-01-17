@@ -1,10 +1,14 @@
-FROM swerpbox/base
+FROM swerpbox/alpine-base
 MAINTAINER Steven Truesdell <steven@strues.io>
 
-ENV NGINX_VERSION 1.11.8
+ARG NGINX_VERSION=1.11.8
 
-ENV BROTLI_COMMIT=1b364aeb42a0919e7c08646aa4f2f50e28d69fa5
-ENV NGX_BROTLI_COMMIT=12529813a9f8475718370a19007c7905601a62ad
+ARG BROTLI_COMMIT=1b364aeb42a0919e7c08646aa4f2f50e28d69fa5
+ARG NGX_BROTLI_COMMIT=12529813a9f8475718370a19007c7905601a62ad
+
+ARG BUILD_DATE
+ARG VERSION
+LABEL build_version="SwerpBox Frontend v:- ${VERSION} Built:- ${BUILD_DATE}"
 
 RUN GPG_KEYS=B0F4253373F8F6F510D42178520A9993A1C052F8 \
 	&& CONFIG="\
@@ -12,8 +16,8 @@ RUN GPG_KEYS=B0F4253373F8F6F510D42178520A9993A1C052F8 \
 		--sbin-path=/usr/sbin/nginx \
 		--modules-path=/usr/lib/nginx/modules \
 		--conf-path=/etc/nginx/nginx.conf \
-		--error-log-path=/var/log/nginx/error.log \
-		--http-log-path=/var/log/nginx/access.log \
+		--error-log-path=/logs/frontend/nginx-error.log \
+		--http-log-path=/logs/frontend/nginx-access.log \
 		--pid-path=/run/nginx.pid \
 		--lock-path=/var/run/nginx.lock \
 		--http-client-body-temp-path=/var/cache/nginx/client_temp \
@@ -141,17 +145,18 @@ RUN GPG_KEYS=B0F4253373F8F6F510D42178520A9993A1C052F8 \
 	&& apk del .gettext \
 	&& mv /tmp/envsubst /usr/local/bin/ \
 	\
+	&& mkdir -p /logs/frontend \
 	# forward request and error logs to docker log collector
-	&& ln -sf /dev/stdout /var/log/nginx/access.log \
-	&& ln -sf /dev/stderr /var/log/nginx/error.log \
-  && chmod 0777 /var/log/nginx && \
+	&& ln -sf /dev/stdout /logs/frontend/nginx-access.log \
+	&& ln -sf /dev/stderr /logs/frontend/nginx-error.log \
+  && chmod -R 0777 /logs/frontend && \
 	mkdir -p /var/cache/nginx/client_temp && chmod 0777 /var/cache/nginx/client_temp
 
 RUN apk add --no-cache apache2-utils openssl
 
 EXPOSE 80 443 5000
 
-COPY files/make-ssl /usr/local/bin
-COPY files/etc/ /etc/
+COPY make-ssl /usr/local/bin
+COPY rootfs/etc/ /etc/
 
-VOLUME ["/config", "/web", "/data", "/media"]
+VOLUME ["/config", "/web", "/data", "/media", "/logs"]

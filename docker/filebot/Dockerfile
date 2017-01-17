@@ -19,7 +19,7 @@ RUN \
   add-apt-repository ppa:webupd8team/java && \
   apt-get update && \
   apt-get install -qqy --allow-unauthenticated oracle-java8-installer inotify-tools && \
-  mkdir /app/
+  mkdir /app/ && mkdir -p /logs/filebot
 
 COPY app/ /app/
 
@@ -30,11 +30,11 @@ RUN \
   mkdir /config
 
 
-COPY root /
+COPY rootfs /
 
 RUN \
   chmod a+wx /app/filebot.sh && \
   chmod +x /app/monitor.sh && \
   chmod a+w /app/filebot.conf
 
-VOLUME ["/data", "/media", "/config", "/host"]
+VOLUME ["/data", "/media", "/config", "/logs"]

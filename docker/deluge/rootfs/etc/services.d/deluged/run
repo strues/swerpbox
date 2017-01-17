@@ -1,0 +1,5 @@
+#!/usr/bin/with-contenv bash
+
+umask 002
+
+exec s6-setuidgid swerp /usr/bin/deluged -c /config -d --loglevel=info -l /logs/deluge/deluged.log
