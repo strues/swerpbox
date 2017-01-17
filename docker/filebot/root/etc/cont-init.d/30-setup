@@ -1,0 +1,21 @@
+#!/usr/bin/with-contenv bash
+export HOME=/config
+
+function ts {
+  echo [`date '+%b %d %X'`]
+}
+
+
+function setup_opensubtitles_account {
+  . /config/filebot.conf
+
+  if [ "$OPENSUBTITLES_USER" != "" ]; then
+    echo "$(ts) Configuring for OpenSubtitles user \"$OPENSUBTITLES_USER\""
+    echo -en "$OPENSUBTITLES_USER\n$OPENSUBTITLES_PASSWORD\n" | exec s6-setuidgid swerp filebot -script fn:configure
+  else
+    echo "$(ts) No OpenSubtitles user set. Skipping setup..."
+  fi
+}
+setup_opensubtitles_account
+
+chown -R swerp:swerp /app /config

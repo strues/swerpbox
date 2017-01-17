@@ -1,0 +1,10 @@
+PGID=1000
+PUID=1000
+USERNAME=swerp
+PASSWORD=swerp
+TZ=America/Denver
+PLEX_CLAIM=Go to https://www.plex.tv/claim for the code
+ADVERTISE_IP=ServerIP
+PLEX_UID=1000
+PLEX_GID=1000
+CHANGE_CONFIG_DIR_OWNERSHIP=false
