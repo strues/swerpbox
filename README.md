@@ -1,12 +1,15 @@
-# SwerpBox  
+# What is SwerpBox?  
 
 [![CircleCI](https://circleci.com/gh/strues/swerpbox.svg?style=svg)](https://circleci.com/gh/strues/swerpbox)
 
 
 > SwerpBox, a seedbox and media center combined with the power of  🐳 Docker.  
 
+# Prerequisites
 
-## Get Started
+To run this application you need Docker Engine 1.10.0+ and Docker Compose with a version 1.6.0 or later.
+
+# Get Started
 
 Clone this repository or upload the contents of the repository to your web server. Where you place the SwerpBox files is where all the fun happens. I recommend working out of your home directory.
 
@@ -22,19 +25,10 @@ The output will look like this:
 uid=1000(swerp) gid=1000(swerp) groups=1000(swerp)
 ```
 
-It is crucial that the PGID and PUID variables are correct as they map  permissions to the user.  
+It is crucial to set PGID and PUID variables to the values matching the user running SwerpBox.
 
 
-### Frontend
-
-Available variables:
-
- - `TZ`: Your timezone. Default: **America/Denver**
- - `PUID`: User UID. Default: **1000**
- - `PGID`: User group id. Default: **1000**
-
-
-### rTorrent/ruTorrent
+## Frontend
 
 Available variables:
 
@@ -42,7 +36,20 @@ Available variables:
  - `PUID`: User UID. Default: **1000**
  - `PGID`: User group id. Default: **1000**
 
-### Deluge
+
+## rTorrent/ruTorrent
+
+Available variables:
+
+ - `TZ`: Your timezone. Default: **America/Denver**
+ - `PUID`: User UID. Default: **1000**
+ - `PGID`: User group id. Default: **1000**
+
+## Deluge
+
+This container runs the Deluge BitTorrent daemon and the web ui. To learn more, visit the [Deluge website](http://deluge-torrent.org).
+
+The [LtConfig](https://github.com/ratanakvlun/deluge-ltconfig) plugin is installed by default.
 
 Available variables:
 
@@ -50,7 +57,7 @@ Available variables:
 - `PUID`: User UID. Default: **1000**
 - `PGID`: User group id. Default: **1000**
 
-### Plex
+## Plex
 
 Available variables:
 
@@ -62,7 +69,17 @@ Available variables:
  - `CHANGE_CONFIG_DIR_OWNERSHIP`: Change directory ownership. Default: **false**
 
 
-### Filebot
+## Filebot
+
+Available variables:
+
+  - `OUTPUT_FOLDER`: Directory Filebot outputs to. Default: **/media**
+  - `INPUT_FOLDER`: Directory Filebot reads from. Default: **/data/complete**
+  - `ACTION`: What should Filebot do? Default: **hardlink**
+  - `MUSIC`: Do you want Filebot to handle music? Default: **n**
+  - `PUID`: User UID. Default: **1000**
+  - `PGID`: User group id. Default: **1000**
+  - `TZ`: Your timezone. Default: **America/Denver**
 
 
-## Additional information
+# Additional Information
