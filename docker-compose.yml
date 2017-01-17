@@ -136,7 +136,7 @@ services:
   logs_data:
     image: tianon/true
     volumes:
-      - "./logs:/logs:ro"
+      - "./logs:/logs"
 volumes:
   rutorrent-data:
     driver: local

@@ -1,6 +1,6 @@
 #!/usr/bin/with-contenv bash
 
-mkdir -p /config/frontend/certs
+mkdir -p /config/frontend/certs /logs/frontend
 
 htpasswd -cb /etc/nginx/.htpasswd $USERNAME $PASSWORD
 

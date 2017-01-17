@@ -8,7 +8,7 @@
 
 ## Get Started
 
-Clone this repository or upload the contents of the repository to your web server. Where you place the SwerpBox files is where all of your activities will take place. I recommend working out of your home directory.
+Clone this repository or upload the contents of the repository to your web server. Where you place the SwerpBox files is where all the fun happens. I recommend working out of your home directory.
 
 Example: `/home/<USER>/swerpbox`  
 
@@ -27,14 +27,39 @@ It is crucial that the PGID and PUID variables are correct as they map  permissi
 
 ### Frontend
 
+Available variables:
+
+ - `TZ`: Your timezone. Default: **America/Denver**
+ - `PUID`: User UID. Default: **1000**
+ - `PGID`: User group id. Default: **1000**
+
 
 ### rTorrent/ruTorrent
 
+Available variables:
+
+ - `TZ`: Your timezone. Default: **America/Denver**
+ - `PUID`: User UID. Default: **1000**
+ - `PGID`: User group id. Default: **1000**
 
 ### Deluge
 
+Available variables:
+
+- `TZ`: Your timezone. Default: **America/Denver**
+- `PUID`: User UID. Default: **1000**
+- `PGID`: User group id. Default: **1000**
 
 ### Plex
+
+Available variables:
+
+ - `TZ`: Your timezone. Default: **America/Denver**
+ - `PLEX_CLAIM`: Plex claim token. Get it from: **https://plex.tv/claim**
+ - `ADVERTISE_IP`: Server IP address for plex. Default: **http://127.0.0.1:32400**
+ - `PLEX_UID`: User UID. Default: **1000**
+ - `PLEX_GID`: User group id. Default: **1000**
+ - `CHANGE_CONFIG_DIR_OWNERSHIP`: Change directory ownership. Default: **false**
 
 
 ### Filebot
