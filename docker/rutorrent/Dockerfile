@@ -21,21 +21,21 @@ RUN \
         logrotate \
         nginx \
         rtorrent \
-	dtach \
+	      dtach \
         tar \
         unrar \
         unzip \
         wget \
-	irssi \
-	irssi-perl \
+	      irssi \
+	      irssi-perl \
         libressl-dev \
-	zlib \
-	zlib-dev \
-	libxml2-dev \
-	perl-archive-zip \
-	perl-net-ssleay \
-	perl-digest-sha1 \
-	git \
+      	zlib \
+      	zlib-dev \
+      	libxml2-dev \
+      	perl-archive-zip \
+      	perl-net-ssleay \
+      	perl-digest-sha1 \
+      	git \
         zip && \
  # php packages
  apk add --no-cache --repository http://nl.alpinelinux.org/alpine/edge/community \
@@ -44,7 +44,7 @@ RUN \
         php7-fpm \
         php7-json  \
         php7-mbstring \
-	php7-sockets \
+	      php7-sockets \
         php7-opcache \
         php7-mcrypt \
         php7-xmlrpc \
@@ -56,7 +56,7 @@ RUN \
         automake \
         cppunit-dev \
         curl-dev \
-	perl-dev \
+	      perl-dev \
         file \
         g++ \
         gcc \
@@ -65,13 +65,13 @@ RUN \
         ncurses-dev && \
 
 # install webui
- mkdir -p /web/rutorrent /defaults/rutorrent && \
+ mkdir -p /web/rutorrent /defaults/rutorrent-conf && \
  curl -o /tmp/rutorrent.tar.gz -L ${RUTORRENT_ADDR} && \
 
  tar xf /tmp/rutorrent.tar.gz -C /web/rutorrent --strip-components=1 && \
 
- mv /web/rutorrent/conf/* /defaults/rutorrent/ && \
- rm -rf /defaults/rutorrent/users && \
+ mv /web/rutorrent/conf/* /defaults/rutorrent-conf/ && \
+ rm -rf /defaults/rutorrent-conf/users && \
 
 # install autodl-irssi perl modules
  perl -MCPAN -e 'my $c = "CPAN::HandleConfig"; $c->load(doit => 1, autoconfig => 1); $c->edit(prerequisites_policy => "follow"); $c->edit(build_requires_install_policy => "yes"); $c->commit' && \

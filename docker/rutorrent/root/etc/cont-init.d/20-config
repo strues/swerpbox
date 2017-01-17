@@ -11,7 +11,7 @@ mkdir -p \
 # copy config
 PREV_DIR=$(pwd)
 
-cd /defaults/rutorrent || exit
+cd /defaults/rutorrent-conf || exit
 	shopt -s globstar nullglob
 	for i in *
 	do

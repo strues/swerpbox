@@ -144,7 +144,8 @@ RUN GPG_KEYS=B0F4253373F8F6F510D42178520A9993A1C052F8 \
 	# forward request and error logs to docker log collector
 	&& ln -sf /dev/stdout /var/log/nginx/access.log \
 	&& ln -sf /dev/stderr /var/log/nginx/error.log \
-  && chmod 0777 /var/log/nginx
+  && chmod 0777 /var/log/nginx && \
+	mkdir -p /var/cache/nginx/client_temp && chmod 0777 /var/cache/nginx/client_temp
 
 RUN apk add --no-cache apache2-utils openssl
 
