@@ -10,8 +10,7 @@ services:
       - "443:443"
     links:
       - rutorrent
-    depends_on:
-      - rutorrent
+      - deluge
     environment:
       PGID: 1000
       PUID: 1000
@@ -52,7 +51,7 @@ services:
       - "58946:58946"
       - "58946:58946/udp"
       - "58846:58846"
-      - "8112:8112"
+      - "0.0.0.0:8112:8112"
     environment:
       PGID: 1000
       PUID: 1000
@@ -63,6 +62,32 @@ services:
       - "./media:/media"
     networks:
       - swerpbox
+  plex:
+    container_name: plex
+    image: plexinc/pms-docker
+    restart: unless-stopped
+    ports:
+      - "32400:32400/tcp"
+      - "3005:3005/tcp"
+      - "8324:8324/tcp"
+      - "32469:32469/tcp"
+      - "1900:1900/udp"
+      - "32410:32410/udp"
+      - "32412:32412/udp"
+      - "32413:32413/udp"
+      - "32414:32414/udp"
+    environment:
+      TZ: "America/Denver"
+      PLEX_CLAIM: "claim-KvJkkL2WEKxYjdVRG2iQ" # https://www.plex.tv/claim
+      ADVERTISE_IP: "http://5.9.84.163:32400/"
+      PLEX_UID: 1000
+      PLEX_GID: 1000
+      CHANGE_CONFIG_DIR_OWNERSHIP: false
+    hostname: swerpbox
+    volumes:
+      - "./config/plex:/config"
+      - "./config/plex/tmp:/transcode"
+      - "./media:/data"
 
 volumes:
   rutorrent-data:
