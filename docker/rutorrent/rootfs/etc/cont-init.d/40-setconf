@@ -3,14 +3,14 @@
 # make folders
 mkdir -p /config/tmp /detach_sess
 
-[[ ! -L /home/swerp/autodl ]] && ln -s /config/autodl /home/swerp/autodl
+[[ ! -L /home/swerp/.autodl ]] && ln -s /config/.autodl /home/swerp/.autodl
 
-[[ ! -L /config/irssi/scripts/autorun/autodl-irssi.pl ]] && \
-  ln -s /config/irssi/scripts/autodl-irssi.pl /config/irssi/scripts/autorun/autodl-irssi.pl
+[[ ! -L /config/.irssi/scripts/autorun/autodl-irssi.pl ]] && \
+  ln -s /config/.irssi/scripts/autodl-irssi.pl /config/.irssi/scripts/autorun/autodl-irssi.pl
 
-[[ ! -f /config/autodl/autodl.cfg ]] && cp /defaults/autodl.cfg /config/autodl/autodl.cfg
+[[ ! -f /config/.autodl/autodl.cfg ]] && cp /defaults/autodl.cfg /config/.autodl/autodl.cfg
 
-[[ ! -f /config/autodl/autodl2.cfg ]] && cp /defaults/autodl2.cfg /config/autodl/autodl2.cfg
+[[ ! -f /config/.autodl/autodl2.cfg ]] && cp /defaults/autodl2.cfg /config/.autodl/autodl2.cfg
 
 [[ ! -f /web/rutorrent/plugins/autodl-irssi/conf.php ]] && \
   cp /defaults/conf.php /web/rutorrent/plugins/autodl-irssi/conf.php
