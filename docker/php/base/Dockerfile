@@ -42,6 +42,7 @@ ENV PHP_SHA256="a810b3f29c21407c24caa88f50649320d20ba6892ae1923132598b8a0ca145b6
 
 RUN set -xe; \
 	\
+	apk --update --no-cache upgrade && \
 	apk add --no-cache --virtual .fetch-deps \
 		gnupg \
 		openssl \
@@ -83,6 +84,13 @@ RUN set -xe \
 		libxml2-dev \
 		libressl \
 		sqlite-dev \
+		libxpm-dev \
+		libaio-dev \
+		libjpeg-turbo-dev \
+		libpng-dev \
+		libmcrypt-dev \
+		icu-dev \
+		freetype-dev gettext-dev libxslt-dev zlib-dev imap-dev gettext-dev \
 	\
 	&& export CFLAGS="$PHP_CFLAGS" \
 		CPPFLAGS="$PHP_CPPFLAGS" \
@@ -99,11 +107,25 @@ RUN set -xe \
 		--enable-ftp \
 		--enable-mbstring \
 		--enable-mysqlnd \
+		--with-xmlrpc \
+		--with-zlib \
+		--with-zlib-dir \
+		--with-libxml-dir=/usr \
+		--enable-xml \
 		\
 		--with-curl \
 		--with-libedit \
 		--with-openssl \
-		--with-zlib \
+		--enable-mbregex \
+		--with-mcrypt \
+		--enable-sockets \
+		--with-gd \
+		--with-xsl \
+		--with-gettext \
+		--enable-zip \
+		--enable-soap \
+		--disable-ipv6 \
+		--disable-debug \
 		\
 		$PHP_EXTRA_CONFIGURE_ARGS \
 	&& make -j "$(getconf _NPROCESSORS_ONLN)" \

@@ -17,13 +17,14 @@ services:
       PUID: 1000
     volumes:
       - "./web/rutorrent:/web/rutorrent:ro"
+      - "./config/nginx/.htpasswd:/etc/nginx/.htpasswd:ro"
       - "./config/nginx/nginx.conf:/etc/nginx/nginx.conf:ro"
       - "./config/nginx/vhost.d:/etc/nginx/vhost.d:ro"
     networks:
       - swerpbox
 
   rutorrent:
-    #image: swerpbox/rutorrent
+    # image: swerpbox/rutorrent
     build: ./docker/rutorrent
     restart: always
     ports:

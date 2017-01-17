@@ -6,9 +6,13 @@ mkdir -p \
   /data{/complete,/downloading,/sessions,/rtwatch} \
 	/run/php
 
+# Create /detach dir if its not found. if it is skip it
 if [[ ! -d /detach_sess ]]; then
   mkdir /detach_sess
 fi
+
+# Check for irssi
+# if not found, get it
 if [ ! -e "/config/.irssi/scripts" ]; then
   echo "Autodl not found, installing"
   mkdir -p /config/.irssi/scripts/autorun && \
@@ -38,27 +42,28 @@ rm /tmp/trackers.zip
 PREV_DIR=$(pwd)
 
 
-# get webui
+# get rutorrent
 [[ ! -d /web/rutorrent/.git ]] && (git clone https://github.com/Novik/ruTorrent.git /web/rutorrent && \
 chown -R swerp:swerp /web/rutorrent && \
 cp /defaults/rutorrent-conf/config.php /web/rutorrent/conf/config.php && \
+cp /defaults/rutorrent-conf/plugins.ini /web/rutorrent/conf/plugins.ini && \
+#
+# Create a robots.txt
 echo "
 User-agent: *
 Disallow: /
-" > /web/rutorrent/robots.txt)
+" > /web/robots.txt)
 
-# opt out for autoupdates
-[ "$ADVANCED_DISABLEUPDATES" ] && exit 0
-
-# update webui
+# update rutorrent
 cd /web/rutorrent || exit
 git pull
 chown -R swerp:swerp /web/rutorrent
 
-# get rutorrent plugin
+# get rutorrent autodl-irssi plugin
 [[ ! -d /web/rutorrent/plugins/autodl-irssi/.git ]] && (git clone https://github.com/autodl-community/autodl-rutorrent.git /web/rutorrent/plugins/autodl-irssi && \
 chown -R swerp:swerp /web/rutorrent/plugins/autodl-irssi)
 
+# Copy rtorrent.rc
 [[ ! -e /config/rtorrent/rtorrent.rc ]] && \
   cp /defaults/rtorrent.rc /config/rtorrent/rtorrent.rc
 
@@ -66,30 +71,24 @@ chown -R swerp:swerp /web/rutorrent/plugins/autodl-irssi)
 [[ -e /config/rtorrent/session/rtorrent.lock ]] && \
 	rm /config/rtorrent/session/rtorrent.lock
 
+## symlink autodl
 [[ ! -e /root/.autodl ]] && ln -s /config/.autodl /root/.autodl
 
-# if [[ ! -d /config/rutorrent/plugins ]]; then
-#   echo "Plugins config folder empty, copying stock plugins."
-#   cp -r /usr/share/webapps/rutorrent/plugins /config/rutorrent/
-# else
-#   echo "Plugin folder found, copying into container."
-#   rm -rf /usr/share/webapps/rutorrent/plugins
-#   cp -r /config/rutorrent/plugins /usr/share/webapps/rutorrent/
-# fi
-
+## configure autodl-irssi
 cd /web/rutorrent/plugins/autodl-irssi || exit
 git pull
 chown -R swerp:swerp /web/rutorrent/plugins/autodl-irssi
 
-echo "
-<?php
+echo "<?php
   PORT = 12354;
   PASSW = "password";
-?>
-" > /web/rutorrent/plugins/autodl-irssi/conf.php && chown swerp:swerp /web/rutorrent/plugins/autodl-irssi/conf.php
+?>" > /web/rutorrent/plugins/autodl-irssi/conf.php && chown swerp:swerp /web/rutorrent/plugins/autodl-irssi/conf.php
 sed -i 's/PORT/$autodlPort/g' /web/rutorrent/plugins/autodl-irssi/conf.php
 sed -i 's/PASSW/$autodlPassword/g' /web/rutorrent/plugins/autodl-irssi/conf.php
 sed -i 's/password/"password"/g' /web/rutorrent/plugins/autodl-irssi/conf.php
+
+# fix the out of control socket spam
+sed -i 's/127.0.0.1/0.0.0.0/g' /web/rutorrent/plugins/autodl-irssi/getConf.php
 
 rm -rf /web/rutorrent/conf/config.php && cp /defaults/rutorrent-conf/config.php /web/rutorrent/conf/config.php
 
