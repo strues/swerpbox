@@ -3,8 +3,6 @@
 # This script by default uses "Automated Media Center" (AMC). See the final filebot call below. For more docs on AMC,
 # visit: http://www.filebot.net/forums/viewtopic.php?t=215
 
-export LC_ALL="en_US.UTF-8"
-
 . /config/filebot.conf
 
 QUOTE_FIXER='replaceAll(/[\`\u00b4\u2018\u2019\u02bb]/, "'"'"'").replaceAll(/[\u201c\u201d]/, '"'"'""'"'"')'

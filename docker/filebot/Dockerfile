@@ -26,13 +26,16 @@ COPY app/ /app/
 RUN \
   dpkg -i /app/filebot_4.7.7_amd64.deb && rm /app/filebot_4.7.7_amd64.deb && \
   apt-get clean && \
-  rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+  rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
+  mkdir /config
 
 
 COPY root /
+COPY filebot.sh /config
 
 RUN \
   chmod a+wx /app/filebot.sh && \
+  chmod a+wx /config/filebot.sh && \
   chmod +x /app/monitor.sh && \
   chmod a+w /app/filebot.conf
 
