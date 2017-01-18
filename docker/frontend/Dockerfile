@@ -151,9 +151,9 @@ RUN GPG_KEYS=B0F4253373F8F6F510D42178520A9993A1C052F8 \
 
 RUN apk add --no-cache apache2-utils openssl
 
-EXPOSE 80 443 5000
+EXPOSE 80 443
 
 COPY make-ssl /usr/local/bin
-COPY rootfs/etc/ /etc/
+COPY rootfs/ /
 
 VOLUME ["/config", "/web", "/data", "/media", "/logs"]

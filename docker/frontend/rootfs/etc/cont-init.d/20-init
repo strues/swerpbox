@@ -10,17 +10,10 @@ chown -R swerp:swerp \
 [[ ! -e /config/frontend/nginx/nginx.conf ]] && \
 	cp /etc/nginx/nginx.conf /config/frontend/nginx/nginx.conf
 
+[[ ! -e /config/frontend/nginx/vhost.d/site.conf ]] && \
+	cp /etc/nginx/vhost.d/site.conf /config/frontend/nginx/vhost.d/site.conf
+
 htpasswd -cb /etc/nginx/.htpasswd $USERNAME $PASSWORD
 
-${USE_SSL:=false}
-if $USE_SSL ; then
-    echo "include ssl.conf;" >> /etc/nginx/common.conf
 
-    # Create self-signed certificate if using ssl and keys do not exist.
-    # You can always replace these with your own keys later.
-    if [[ ! -f /config/frontend/nginx/certs/ssl.key || ! -f /config/frontend/nginx/certs/ssl.crt ]]; then
-        ssl-gen swerp
-    fi
-fi
-
-chown swerp:swerp /config/frontend/nginx/nginx.conf
+chown -R swerp:swerp /config/frontend/nginx/

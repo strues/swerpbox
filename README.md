@@ -9,6 +9,10 @@
 
 To run this application you need Docker Engine 1.10.0+ and Docker Compose with a version 1.6.0 or later.
 
+If you don't have Docker installed and are running Ubuntu 16.04, you may use the setup script, `swerp-setup.sh`. It will install Docker and Docker Compose for you.
+
+`bash swerp-setup.sh`  
+
 ## Important
 > Currently, the proxying is a work in progress. The end goal is to use the frontend container to serve all applications using reverse proxying. It's high up on the todo list. If anyone is an expert in this area, please don't hesitate to submit a pull-request.
 

@@ -2,8 +2,6 @@
 
 # Short helper script to generate self signed SSL certificates.
 
-mkdir -p /config/frontend/certs
-
 openssl req -new -newkey rsa:4096 -days 365 -nodes -x509 \
     -subj "/C=SB/ST=SwerpBox/L=SwerpBox/O=SwerpBox/CN=$1" \
-    -keyout /config/frontend/certs/ssl.key  -out /config/frontend/certs/ssl.crt
+    -keyout /config/frontend/nginx/certs/ssl.key  -out /config/frontend/nginx/certs/ssl.crt
