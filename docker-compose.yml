@@ -4,6 +4,7 @@ services:
   frontend:
     image: swerpbox/frontend
     # build: ./docker/frontend
+    container_name: sb-frontend
     restart: always
     ports:
       - "80:80"
@@ -19,6 +20,7 @@ services:
   rutorrent:
     image: swerpbox/rutorrent
     # build: ./docker/rutorrent
+    container_name: sb-rutorrent
     restart: always
     ports:
       - "49123:49123"
@@ -42,6 +44,7 @@ services:
   deluge:
     image: swerpbox/deluge
     # build: ./docker/deluge
+    container_name: sb-deluge
     restart: always
     ports:
       - "58946:58946"
@@ -60,7 +63,7 @@ services:
     networks:
       - swerpbox
   plex:
-    container_name: plex
+    container_name: sb-plex
     image: plexinc/pms-docker
     restart: unless-stopped
     ports:
@@ -82,7 +85,7 @@ services:
   plexpy:
     image: swerpbox/plexpy
     # build: ./docker/plexpy
-    container_name: plexpy
+    container_name: sb-plexpy
     restart: always
     ports:
       - "8181:8181"
@@ -97,7 +100,7 @@ services:
     links:
       - plex
   filebot:
-    container_name: filebot
+    container_name: sb-filebot
     image: swerpbox/filebot
     # restart: always
     # build: ./docker/filebot
@@ -114,7 +117,7 @@ services:
   sickrage:
     image: swerpbox/sickrage
     # build: ./docker/sickrage
-    container_name: sickrage
+    container_name: sb-sickrage
     ports:
       - "8081:8081"
     env_file: .env

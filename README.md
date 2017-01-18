@@ -14,6 +14,7 @@ If you don't have Docker installed and are running Ubuntu 16.04, you may use the
 `bash swerp-setup.sh`  
 
 ## Important
+
 > Currently, the proxying is a work in progress. The end goal is to use the frontend container to serve all applications using reverse proxying. It's high up on the todo list. If anyone is an expert in this area, please don't hesitate to submit a pull-request.
 
 
@@ -66,7 +67,7 @@ Available variables:
 
 Includes PHP7 and Nginx 1.10.5.
 
-RuTorrent is accessible via http://YOUR.IP.ADDR.ESS:8000/rutorrent/
+RuTorrent is accessible via http://YOUR.IP.ADDR.ESS/rutorrent/
 
 Volumes:
 
@@ -85,7 +86,7 @@ Available variables:
 
 > This container runs the Deluge BitTorrent daemon and the web ui. To learn more, visit the [Deluge website](http://deluge-torrent.org).
 
-Deluge is accessible via http://YOUR.IP.ADDR.ESS:8112
+Deluge is accessible via http://YOUR.IP.ADDR.ESS/deluge
 
 Available variables:
 
