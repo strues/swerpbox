@@ -8,11 +8,7 @@ services:
     ports:
       - "80:80"
       - "443:443"
-    environment:
-      PGID: 1000
-      PUID: 1000
-      USERNAME: swerp
-      PASSWORD: swerp
+    env_file: .env
     volumes:
       - "./config:/config"
     volumes_from:
@@ -31,10 +27,7 @@ services:
       - "5000:5000"
       - "41812:41812"
       - "8000:8000"
-    environment:
-      PGID: 1000
-      PUID: 1000
-      TZ: "America/Denver"
+    env_file: .env
     volumes:
       - "./config:/config"
       - "./data:/data"
@@ -55,10 +48,7 @@ services:
       - "58946:58946/udp"
       - "58846:58846"
       - "0.0.0.0:8112:8112"
-    environment:
-      PGID: 1000
-      PUID: 1000
-      TZ: "America/Denver"
+    env_file: .env
     links:
       - frontend
     volumes:
@@ -83,13 +73,7 @@ services:
       - "32412:32412/udp"
       - "32413:32413/udp"
       - "32414:32414/udp"
-    environment:
-      TZ: "America/Denver"
-      PLEX_CLAIM: "https://www.plex.tv/claim" # https://www.plex.tv/claim
-      ADVERTISE_IP: "http://IP.ADD.RE.SS:32400/"
-      PLEX_UID: 1000
-      PLEX_GID: 1000
-      CHANGE_CONFIG_DIR_OWNERSHIP: "false"
+    env_file: .env
     hostname: swerpbox
     volumes:
       - "./config/plex:/config"
@@ -102,10 +86,7 @@ services:
     restart: always
     ports:
       - "8181:8181"
-    environment:
-      PGID: 1000
-      PUID: 1000
-      TZ: "America/Denver"
+    env_file: .env
     volumes:
       - "./config/plex/Library/Application\ Support/Plex\ Media\ Server/Logs/:/logs:ro"
       - "./config/plexpy:/config"
@@ -120,18 +101,29 @@ services:
     image: swerpbox/filebot
     # restart: always
     # build: ./docker/filebot
-    environment:
-      OUTPUT_FOLDER: "/media"
-      INPUT_FOLDER: "/data/complete"
-      ACTION: "hardlink"
-      MUSIC: "n"
-      PGID: 1000
-      PUID: 1000
-      TZ: "America/Denver"
+    env_file: .env
+    networks:
+      - swerpbox
     volumes:
       - "./config/filebot:/config"
       - "./data:/data"
       - "./media:/media"
+    volumes_from:
+      - logs_data
+
+  sickrage:
+    image: swerpbox/sickrage
+    # build: ./docker/sickrage
+    container_name: sickrage
+    ports:
+      - "8081:8081"
+    env_file: .env
+    networks:
+      - swerpbox
+    volumes:
+      - "./config/sickrage:/config"
+      - "./data:/downloads"
+      - "./media/TV:/tv"
     volumes_from:
       - logs_data
 

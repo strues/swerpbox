@@ -1,0 +1,8 @@
+#!/usr/bin/with-contenv bash
+
+if [[ -d /app/sickrage/.git ]];then
+ echo "Correcting permissions and updating Sickrage"
+ cd /app/sickrage && git pull
+ mkdir -p /logs/sickrage
+ chown -R swerp:swerp /app /logs/sickrage
+fi

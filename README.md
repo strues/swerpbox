@@ -10,7 +10,9 @@
 To run this application you need Docker Engine 1.10.0+ and Docker Compose with a version 1.6.0 or later.
 
 ## Important
-> Currently the proxying is a work in progress. The end goal is the frontend container proxies to all applications. It's high up on the todo list.
+> Currently, the proxying is a work in progress. The end goal is to use the frontend container to serve all applications using reverse proxying. It's high up on the todo list. If anyone is an expert in this area, please don't hesitate to submit a pull-request.
+
+
 
 # Get Started
 
@@ -117,5 +119,15 @@ Available variables:
   - `PGID`: User group id. Default: **1000**
   - `TZ`: Your timezone. Default: **America/Denver**
 
+
+## SickRage
+
+SickRage is accessible via http://YOUR.IP.ADDR.ESS:8081
+
+Available variables:
+
+ - `TZ`: Your timezone. Default: **America/Denver**
+ - `PUID`: User UID. Default: **1000**
+ - `PGID`: User group id. Default: **1000**
 
 # Additional Information
