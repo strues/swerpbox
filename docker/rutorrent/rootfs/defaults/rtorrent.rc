@@ -1,13 +1,17 @@
-execute = {sh,-c,/usr/bin/php7 /web/rutorrent/php/initplugins.php swerp &}
+encoding_list = UTF-8
+system.umask.set = 002
+system.file.max_size.set = -1
+
+## RPC connection
 execute.nothrow = rm,/run/php/.rtorrent.sock
 network.scgi.open_local = /run/php/.rtorrent.sock
 schedule = socket_chmod,0,0,"execute=chmod,0660,/run/php/.rtorrent.sock"
 schedule = socket_chgrp,0,0,"execute=chgrp,swerp,/run/php/.rtorrent.sock"
+
+## Logs
 log.open_file = "rtorrent", /logs/rtorrent/rtorrent.log
 log.add_output = "info", "rtorrent"
-# min_peers = 10
-# max_peers = 1200
-# max_uploads = 15
+
 throttle.min_peers.normal.set = 10
 throttle.max_peers.normal.set = 30
 throttle.min_peers.seed.set = -1
@@ -15,19 +19,29 @@ throttle.max_peers.seed.set = -1
 throttle.max_uploads.set = 30
 throttle.max_uploads.global.set = 0
 throttle.max_downloads.global.set = 3
+
+pieces.sync.always_safe.set = no
+pieces.sync.timeout.set = 600
+pieces.sync.timeout_safe.set = 900
 pieces.memory.max.set = 6G
 pieces.preload.type.set = 1
 pieces.preload.min_size.set = 262144
 pieces.preload.min_rate.set = 5120
+
+network.send_buffer.size.set = 1M
+network.receive_buffer.size.set = 131072
+network.max_open_files.set = 2048
+network.http.max_open.set = 512
+
 throttle.global_down.max_rate.set_kb = 0
 throttle.global_up.max_rate.set_kb = 0
 download_rate = 0
 upload_rate = 0
-schedule = watch_directory_1,5,5,"load.start=/data/rtwatch/*.torrent"
+
 directory = /data/downloading
 session = /config/rtorrent/rtorrent_sess
-schedule = low_diskspace,5,60,close_low_diskspace=100M
-# ip = 178.32.28.51
+
+
 bind = 0.0.0.0
 port_range = 49123-49123
 port_random = no
@@ -37,7 +51,9 @@ encryption = allow_incoming,try_outgoing,enable_retry
 dht = disable
 dht_port = 6881
 peer_exchange = no
-# network.http.ssl_verify_peer.set=0
-# scgi_port = 0.0.0.0:5000
-encoding_list = UTF-8
-system.umask.set = 002
+
+
+schedule = watch_directory_1,5,5,"load.start=/data/rtwatch/*.torrent"
+schedule = low_diskspace,5,60,close_low_diskspace=100M
+
+execute = {sh,-c,/usr/bin/php7 /web/rutorrent/php/initplugins.php swerp &}

@@ -1,10 +1,14 @@
 #!/usr/bin/with-contenv bash
 
-mkdir -p /config/frontend/nginx/certs /logs/frontend
+mkdir -p /config/frontend/nginx/certs /logs/frontend /config/frontend/nginx/vhost.d
 
 chown -R swerp:swerp \
   /config/frontend/nginx/certs \
+  /config/frontend/nginx/vhost.d \
   /logs/frontend
+
+[[ ! -e /config/frontend/nginx/nginx.conf ]] && \
+	cp /etc/nginx/nginx.conf /config/frontend/nginx/nginx.conf
 
 htpasswd -cb /etc/nginx/.htpasswd $USERNAME $PASSWORD
 
@@ -18,3 +22,5 @@ if $USE_SSL ; then
         ssl-gen swerp
     fi
 fi
+
+chown swerp:swerp /config/frontend/nginx/nginx.conf

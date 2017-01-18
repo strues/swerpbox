@@ -9,6 +9,9 @@
 
 To run this application you need Docker Engine 1.10.0+ and Docker Compose with a version 1.6.0 or later.
 
+## Important
+> Currently the proxying is a work in progress. The end goal is the frontend container proxies to all applications. It's high up on the todo list.
+
 # Get Started
 
 Clone this repository or upload the contents of the repository to your web server. Where you place the SwerpBox files is where all the fun happens. I recommend working out of your home directory.
@@ -57,11 +60,13 @@ Available variables:
 
 Includes PHP7 and Nginx 1.10.5.
 
+RuTorrent is accessible via http://YOUR.IP.ADDR.ESS:8000/rutorrent/
+
 Volumes:
 
-- `./data:/data`: Where your torrent data is saved.
-- `./logs:/logs`: Logs for nginx, php and rTorrent.
-- `./config:/config`: Configs for php, nginx, rTorrent, irssi, and autodl.
+- `./data:/data`: Location of saved files.
+- `./logs:/logs`: Logs for rutorrent-nginx, php and rTorrent.
+- `./config:/config`: Configs for php, rutorrent-nginx, rTorrent, irssi, and autodl.
 
 Available variables:
 
@@ -74,6 +79,8 @@ Available variables:
 
 > This container runs the Deluge BitTorrent daemon and the web ui. To learn more, visit the [Deluge website](http://deluge-torrent.org).
 
+Deluge is accessible via http://YOUR.IP.ADDR.ESS:8112
+
 Available variables:
 
 - `TZ`: Your timezone. Default: **America/Denver**
@@ -82,11 +89,17 @@ Available variables:
 
 ## Plex
 
+Uses the official Plex Docker image. Checkout the readme [here](https://github.com/plexinc/pms-docker)
+
+Plex is accessible via http://YOUR.IP.ADDR.ESS:3400/web
+
+The default library location is `./media`
+
 Available variables:
 
  - `TZ`: Your timezone. Default: **America/Denver**
  - `PLEX_CLAIM`: Plex claim token. Get it from: **https://plex.tv/claim**
- - `ADVERTISE_IP`: Server IP address for plex. Default: **http://127.0.0.1:32400**
+ - `ADVERTISE_IP`: Server IP address for Plex. Default: **http://127.0.0.1:32400**
  - `PLEX_UID`: User UID. Default: **1000**
  - `PLEX_GID`: User group id. Default: **1000**
  - `CHANGE_CONFIG_DIR_OWNERSHIP`: Change directory ownership. Default: **false**

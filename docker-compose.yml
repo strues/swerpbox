@@ -2,15 +2,12 @@ version: '2'
 
 services:
   frontend:
-    # image: swerpbox/frontend
-    build: ./docker/frontend
+    image: swerpbox/frontend
+    # build: ./docker/frontend
     restart: always
     ports:
       - "80:80"
       - "443:443"
-    links:
-      - rutorrent
-      - deluge
     environment:
       PGID: 1000
       PUID: 1000
@@ -24,8 +21,8 @@ services:
       - swerpbox
 
   rutorrent:
-    # image: swerpbox/rutorrent
-    build: ./docker/rutorrent
+    image: swerpbox/rutorrent
+    # build: ./docker/rutorrent
     restart: always
     ports:
       - "49123:49123"
@@ -33,6 +30,7 @@ services:
       - "6881:6881/udp"
       - "5000:5000"
       - "41812:41812"
+      - "8000:8000"
     environment:
       PGID: 1000
       PUID: 1000
@@ -41,14 +39,16 @@ services:
       - "./config:/config"
       - "./data:/data"
       - "./media:/media"
+    links:
+      - frontend
     volumes_from:
       - logs_data
     networks:
       - swerpbox
 
   deluge:
-    # image: swerpbox/deluge
-    build: ./docker/deluge
+    image: swerpbox/deluge
+    # build: ./docker/deluge
     restart: always
     ports:
       - "58946:58946"
@@ -59,6 +59,8 @@ services:
       PGID: 1000
       PUID: 1000
       TZ: "America/Denver"
+    links:
+      - frontend
     volumes:
       - "./config/deluge:/config"
       - "./data:/data"
@@ -83,8 +85,8 @@ services:
       - "32414:32414/udp"
     environment:
       TZ: "America/Denver"
-      PLEX_CLAIM: "claim-61GCy8Zp89akcNrMhfzm" # https://www.plex.tv/claim
-      ADVERTISE_IP: "http://176.9.144.80:32400/"
+      PLEX_CLAIM: "https://www.plex.tv/claim" # https://www.plex.tv/claim
+      ADVERTISE_IP: "http://IP.ADD.RE.SS:32400/"
       PLEX_UID: 1000
       PLEX_GID: 1000
       CHANGE_CONFIG_DIR_OWNERSHIP: "false"
@@ -137,9 +139,6 @@ services:
     image: tianon/true
     volumes:
       - "./logs:/logs"
-volumes:
-  rutorrent-data:
-    driver: local
 
 networks:
   swerpbox:
