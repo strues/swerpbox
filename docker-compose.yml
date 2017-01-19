@@ -63,8 +63,8 @@ services:
     networks:
       - swerpbox
   plex:
-    container_name: sb-plex
     image: plexinc/pms-docker
+    container_name: sb-plex
     restart: unless-stopped
     ports:
       - "32400:32400/tcp"
@@ -78,6 +78,8 @@ services:
       - "32414:32414/udp"
     env_file: .env
     hostname: swerpbox
+    networks:
+      - swerpbox
     volumes:
       - "./config/plex:/config"
       - "./config/plex/tmp:/transcode"
