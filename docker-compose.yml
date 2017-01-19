@@ -12,6 +12,7 @@ services:
     env_file: .env
     volumes:
       - "./config:/config"
+      - "./srv/nginx:/etc/nginx"
     volumes_from:
       - logs_data
     networks:
