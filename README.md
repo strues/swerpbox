@@ -175,3 +175,6 @@ under `/etc/nginx/certs/archive/LETSENCRYPT_DOMAIN1/*.pem`.
 
 In the directory `srv/nginx/vhost.d` you'll want to modify the example configurations for each subdomain.
 
+If SickRage is running, stop it. Go to `config/sickrage` and edit `config.ini`. Find the line that says
+`handle_reverse_proxy` and change the 0 to a 1. Now start SickRage again.
+
