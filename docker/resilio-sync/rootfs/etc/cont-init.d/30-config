@@ -1,0 +1,7 @@
+#!/usr/bin/with-contenv bash
+
+[[ ! -e /config/sync.conf ]] && \
+  cp /defaults/sync.conf /config/sync.conf
+
+chown -R swerp:swerp /config
+chown swerp:swerp /data
