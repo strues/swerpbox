@@ -1,0 +1,47 @@
+server {
+  listen 80;
+  listen [::]:80;
+  server_name deluge.YOURDOMAIN.TLD;
+
+  return 301 https://deluge.YOURDOMAIN.TLD$request_uri;
+}
+
+server {
+  listen                      443 ssl http2;
+  listen                      [::]:443 ssl http2;
+  server_name                 deluge.YOURDOMAIN.TLD;
+
+
+  ## SSL
+  ## ------------------
+  ssl_certificate             /etc/nginx/certs/archive/LETSENCRYPTDOMAIN1/fullchain1.pem;
+  ssl_certificate_key         /etc/nginx/certs/archive/LETSENCRYPTDOMAIN1/privkey1.pem;
+  ssl_dhparam                 /etc/nginx/certs/dhparam.pem;
+
+  include /etc/nginx/cfgs/ssl/ssl.conf;
+
+  ssl_session_ticket_key      /etc/nginx/certs/ticket.key;
+  ssl_trusted_certificate     /etc/nginx/certs/archive/LETSENCRYPTDOMAIN1/fullchain1.pem;
+
+  include /etc/nginx/cfgs/security/ssl-headers.conf;
+
+  ## Brotli
+  ## ------------------
+  brotli on;
+  brotli_static on;
+  brotli_min_length 1000;
+  brotli_buffers 32 8k;
+  brotli_comp_level 5;
+  brotli_types *;
+
+  location / {
+
+    proxy_pass http://deluge/;
+    proxy_set_header X-Deluge-Base "/deluge/";
+
+    include /etc/nginx/cfgs/proxy/headers.conf;
+    include /etc/nginx/cfgs/proxy/params.conf;
+  }
+
+}
+include /etc/nginx/cfgs/upstream/deluge.conf;

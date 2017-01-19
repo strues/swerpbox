@@ -1,19 +1,11 @@
 #!/usr/bin/with-contenv bash
 
-mkdir -p /config/frontend/nginx/certs /logs/frontend /config/frontend/nginx/vhost.d
+mkdir -p /logs/frontend
 
 chown -R swerp:swerp \
-  /config/frontend/nginx/certs \
-  /config/frontend/nginx/vhost.d \
+  /etc/nginx/certs \
+  /etc/nginx/vhost.d \
   /logs/frontend
 
-[[ ! -e /config/frontend/nginx/nginx.conf ]] && \
-	cp /etc/nginx/nginx.conf /config/frontend/nginx/nginx.conf
-
-[[ ! -e /config/frontend/nginx/vhost.d/site.conf ]] && \
-	cp /etc/nginx/vhost.d/site.conf /config/frontend/nginx/vhost.d/site.conf
 
 htpasswd -cb /etc/nginx/.htpasswd $USERNAME $PASSWORD
-
-
-chown -R swerp:swerp /config/frontend/nginx/

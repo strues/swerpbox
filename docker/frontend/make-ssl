@@ -2,6 +2,5 @@
 
 # Short helper script to generate self signed SSL certificates.
 
-openssl req -new -newkey rsa:4096 -days 365 -nodes -x509 \
-    -subj "/C=SB/ST=SwerpBox/L=SwerpBox/O=SwerpBox/CN=$1" \
-    -keyout /config/frontend/nginx/certs/ssl.key  -out /config/frontend/nginx/certs/ssl.crt
+openssl req -new -newkey rsa:4096 -days 365000 -nodes -x509 \
+        -keyout /config/frontend/nginx/certs/ssl.key  -out /config/frontend/nginx/certs/ssl.crt

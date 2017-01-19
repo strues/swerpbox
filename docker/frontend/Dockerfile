@@ -112,6 +112,7 @@ RUN GPG_KEYS=B0F4253373F8F6F510D42178520A9993A1C052F8 \
 	&& rm -rf /etc/nginx/html/ \
 	&& rm -rf /etc/nginx/conf.d/* \
 	&& mkdir /etc/nginx/vhost.d/ \
+	&& mkdir -p /var/www/public \
 	&& install -m755 objs/nginx-debug /usr/sbin/nginx-debug \
 	&& install -m755 objs/ngx_http_xslt_filter_module-debug.so /usr/lib/nginx/modules/ngx_http_xslt_filter_module-debug.so \
 	&& install -m755 objs/ngx_http_image_filter_module-debug.so /usr/lib/nginx/modules/ngx_http_image_filter_module-debug.so \
