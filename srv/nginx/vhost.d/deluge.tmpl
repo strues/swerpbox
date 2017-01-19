@@ -37,8 +37,8 @@ server {
   location / {
 
     proxy_pass http://deluge/;
-    proxy_set_header X-Deluge-Base "/deluge/";
-
+    proxy_set_header X-Deluge-Base "/";
+    add_header X-Frame-Options SAMEORIGIN;
     include /etc/nginx/cfgs/proxy/headers.conf;
     include /etc/nginx/cfgs/proxy/params.conf;
   }
