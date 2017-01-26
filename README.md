@@ -107,20 +107,41 @@ Available variables:
  - `CHANGE_CONFIG_DIR_OWNERSHIP`: Change directory ownership. Default: **false**
 
 
-## Filebot
+## Sonarr
+
+Sonarr is accessible via http://YOUR.IP.ADDR.ESS:8989
 
 Available variables:
 
-  - `OUTPUT_FOLDER`: Directory Filebot outputs to. Default: **/media**
-  - `INPUT_FOLDER`: Directory Filebot reads from. Default: **/data/complete**
-  - `ACTION`: What should Filebot do? Default: **hardlink**
-  - `MUSIC`: Do you want Filebot to handle music? Default: **n**
-  - `PUID`: User UID. Default: **1000**
-  - `PGID`: User group id. Default: **1000**
-  - `TZ`: Your timezone. Default: **America/Denver**
+ - `TZ`: Your timezone. Default: **America/Denver**
+ - `PUID`: User UID. Default: **1000**
+ - `PGID`: User group id. Default: **1000**
+
+**Volumes:**
+
+ - `./config/sonarr:/config`: Where the config files are stored.
+ - `./data:/data`: Entire directory of all files. Used to mount the complete folder.
+ - `./data/downloading:/downloads`: Where downloading torrents are located
+ - `./media/TV Shows:/tv`: Location of media directory, where Plex reads from. Sonarr hardlinks complete files here.
+
+Setting up Sonarr to automatically use rTorrent to download files and automatically
+hardlink them to the organized media folder is easy.
+
+1. Visit the Sonarr web interface.
+2. Go to `Download Client` and click add.
+3. Choose rTorrent and enter the settings shown in the screenshot.
+
+![sonarr-rtorrent](docs/assets/sonarr-rtorrent.png)
+
+4. On the `Download Client` page, toward the bottom is the Drone configuration. Point the drone to
+watch `/data/complete`.
+
+![sonarr-rtorrent](docs/assets/sonarr-rtorrent-drone.png)
 
 
 ## SickRage
+
+> Dropped in favor of Sonarr, but still included incase you prefer it.
 
 SickRage is accessible via http://YOUR.IP.ADDR.ESS:8081
 

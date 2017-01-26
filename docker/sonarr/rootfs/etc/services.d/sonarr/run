@@ -1,0 +1,7 @@
+#!/usr/bin/with-contenv bash
+
+umask 022
+
+cd /opt/NzbDrone || exit
+
+exec  s6-setuidgid swerp mono --debug NzbDrone.exe -nobrowser -data=/config

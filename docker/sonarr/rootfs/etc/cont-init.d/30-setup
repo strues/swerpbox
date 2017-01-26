@@ -1,0 +1,7 @@
+#!/usr/bin/with-contenv bash
+
+# cleanup pid if it exists
+[[ -e /config/nzbdrone.pid ]] && rm -rf /config/nzbdrone.pid
+
+# permissions
+chown -R swerp:swerp /opt/NzbDrone

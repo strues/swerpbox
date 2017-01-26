@@ -40,10 +40,10 @@ function is_change_event {
   elif [ "$EVENT" == "CREATE,ISDIR" ]
   then
     echo "$(ts) Detected new dir: $INFO"
-  elif [ "$EVENT" == "MOVED_TO,ISDIR" ]
+  elif [ "$EVENT" == "MOVED_TO,IS_DIR" ]
   then
     echo "$(ts) Detected dir moved into dir: $INFO"
-  elif [ "$EVENT" == "MOVED_FROM,ISDIR" ]
+  elif [ "$EVENT" == "MOVED_FROM,IS_DIR" ]
   then
     echo "$(ts) Detected dir moved out of dir: $INFO"
   elif [ "$EVENT" == "DELETE,ISDIR" ]
@@ -77,6 +77,16 @@ function check_config {
 
   if [[ ! "$MIN_PERIOD" =~ ^([0-9]{1,2}:){0,2}[0-9]{1,2}$ ]]; then
     echo "$(ts) MIN_PERIOD must be defined in $CONFIG_FILE as HH:MM:SS or MM:SS or SS."
+    exit 1
+  fi
+
+  if [[ ! "$USER_ID" =~ ^[0-9]{1,}$ ]]; then
+    echo "$(ts) USER_ID must be defined in $CONFIG_FILE as a whole number."
+    exit 1
+  fi
+
+  if [[ ! "$GROUP_ID" =~ ^[0-9]{1,}$ ]]; then
+    echo "$(ts) GROUP_ID must be defined in $CONFIG_FILE as a whole number."
     exit 1
   fi
 
@@ -211,11 +221,11 @@ do
     # Wait until it's okay to run the command again, monstering up events as we do so
     wait_for_minimum_period $last_run_time
 
-    echo "$(ts) Running Filebot command"
+    echo "$(ts) Running Filebot"
     /config/filebot.sh &
     PID=$!
-    echo "Got pid $PID"
     last_run_time=$(date +"%s")
+
     wait_for_command_to_complete $PID
   fi
 done <$pipe

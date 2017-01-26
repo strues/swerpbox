@@ -63,6 +63,7 @@ services:
       - logs_data
     networks:
       - swerpbox
+
   plex:
     image: plexinc/pms-docker
     container_name: sb-plex
@@ -85,6 +86,7 @@ services:
       - "./config/plex:/config"
       - "./config/plex/tmp:/transcode"
       - "./media:/data"
+
   plexpy:
     image: swerpbox/plexpy
     # build: ./docker/plexpy
@@ -129,7 +131,44 @@ services:
     volumes:
       - "./config/sickrage:/config"
       - "./data:/downloads"
-      - "./media/TV:/tv"
+      - "./media/TV Shows:/tv"
+    volumes_from:
+      - logs_data
+
+  resilio:
+    image: swerpbox/resilio-sync
+    #build: ./docker/resilio-sync
+    container_name: sb-resilio
+    ports:
+      - "8888:8888"
+      - "55555:55555"
+    env_file: .env
+    networks:
+      - swerpbox
+    volumes:
+      - "./config/resilio:/config"
+      - "./data:/data"
+
+    volumes_from:
+      - logs_data
+
+  sonarr:
+    image: swerpbox/sonarr
+    # build: ./docker/sonarr
+    container_name: sb-sonarr
+    ports:
+      - "8989:8989"
+    env_file: .env
+    networks:
+      - swerpbox
+    links:
+      - frontend
+      - rutorrent
+    volumes:
+      - "./config/sonarr:/config"
+      - "./data:/data"
+      - "./data/downloading:/downloads"
+      - "./media/TV Shows:/tv"
     volumes_from:
       - logs_data
 

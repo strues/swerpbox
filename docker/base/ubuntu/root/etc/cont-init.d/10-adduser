@@ -1,0 +1,28 @@
+#!/usr/bin/with-contenv bash
+
+PUID=${PUID:-911}
+PGID=${PGID:-911}
+
+groupmod -o -g "$PGID" swerp
+usermod -o -u "$PUID" swerp
+
+echo "
+-------------------------------------
+  ____                     ___
+ / __/     _____ _______  / _ )___ __ __
+ _\ \| |/|/ / -_) __/ _ \/ _  / _ \\ \ /
+/___/|__,__/\__/_/ / .__/____/\___/_\_\
+                  /_/
+-------------------------------------
+-------------------------------------
+GID/UID
+-------------------------------------
+User uid:    $(id -u swerp)
+User gid:    $(id -g swerp)
+-------------------------------------
+"
+chown swerp:swerp /config
+chown swerp:swerp /data
+chown swerp:swerp /media
+chown swerp:swerp /app
+chown swerp:swerp /defaults
