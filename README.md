@@ -13,6 +13,50 @@ If you don't have Docker installed and are running Ubuntu 16.04, you may use the
 
 `bash swerp-setup.sh`
 
+# Structure
+
+```
+ docker/
+    ├── base
+    ├── deluge
+    ├── filebot
+    ├── frontend
+    ├── plexpy
+    ├── rutorrent
+    └── sonarr
+ data/
+    ├── complete
+    ├── downloading
+    ├── dwatch
+    └── rtwatch
+ media/
+    ├── Movies
+    └── TV Shows
+ srv/
+    ├── nginx
+    └── public
+ config/
+    ├── deluge
+    ├── frontend
+    ├── php
+    ├── plex
+    ├── plexpy
+    ├── resilio
+    ├── rtorrent
+    ├── rutorrent
+    ├── rutorrent-nginx
+    ├── sickrage
+    ├── sonarr
+    └── tmp
+ logs/
+    ├── deluge
+    ├── filebot
+    ├── frontend
+    ├── rtorrent
+    ├── rutorrent
+    └── rutorrent-nginx
+ docker-compose.yml
+```
 
 # Get Started
 
@@ -34,23 +78,32 @@ It is crucial to set PGID and PUID variables to the values matching the user run
 
 # Containers
 
-## Alpine
+## Base Images
+### Alpine
 [![](https://images.microbadger.com/badges/image/swerpbox/alpine-base.svg)](https://microbadger.com/images/swerpbox/alpine-base "SwerpBox Alpine")  [![](https://images.microbadger.com/badges/version/swerpbox/alpine-base.svg)](https://microbadger.com/images/swerpbox/alpine-base "SwerpBox Alpine")
 
-
-
-## Ubuntu
+### Ubuntu
+[![](https://images.microbadger.com/badges/image/swerpbox/ubuntu-base.svg)](https://microbadger.com/images/swerpbox/ubuntu-base "SwerpBox Ubuntu")  [![](https://images.microbadger.com/badges/version/swerpbox/ubuntu-base.svg)](https://microbadger.com/images/swerpbox/ubuntu-base "SwerpBox Ubuntu")
 
 
 ## Frontend
 [![](https://images.microbadger.com/badges/image/swerpbox/frontend.svg)](https://microbadger.com/images/swerpbox/frontend "SwerpBox Frontend") [![](https://images.microbadger.com/badges/version/swerpbox/frontend.svg)](https://microbadger.com/images/swerpbox/frontend "SwerpBox Frontend")
 
+> Nginx 1.11.8 compiled from source with Brotli compression and HTTP/2 support.
 
-Available variables:
+The nginx default host configuration is setup for you. Located in `srv/nginx/vhost.d/site.conf`. See the advanced configuration below for specifics on
+how to setup reverse proxies for enabled services.
+
+**Available variables:**
 
  - `TZ`: Your timezone. Default: **America/Denver**
  - `PUID`: User UID. Default: **1000**
  - `PGID`: User group id. Default: **1000**
+
+**Volumes:**
+
+ - `./srv/nginx:/etc/nginx`: Nginx configuration.
+ - `./srv/public:/var/www/public`: Web root for the frontend.
 
 
 ## rTorrent/ruTorrent
@@ -64,17 +117,18 @@ Includes PHP7 and Nginx 1.10.5.
 
 RuTorrent is accessible via http://YOUR.IP.ADDR.ESS/rutorrent/
 
-Volumes:
+**Available variables:**
+
+ - `TZ`: Your timezone. Default: **America/Denver**
+ - `PUID`: User UID. Default: **1000**
+ - `PGID`: User group id. Default: **1000**
+
+**Volumes:**
 
 - `./data:/data`: Location of saved files.
 - `./logs:/logs`: Logs for rutorrent-nginx, php and rTorrent.
 - `./config:/config`: Configs for php, rutorrent-nginx, rTorrent, irssi, and autodl.
 
-Available variables:
-
- - `TZ`: Your timezone. Default: **America/Denver**
- - `PUID`: User UID. Default: **1000**
- - `PGID`: User group id. Default: **1000**
 
 ## Deluge
 [![](https://images.microbadger.com/badges/image/swerpbox/deluge.svg)](https://microbadger.com/images/swerpbox/deluge "SwerpBox Deluge") [![](https://images.microbadger.com/badges/version/swerpbox/deluge.svg)](https://microbadger.com/images/swerpbox/deluge "SwerpBox Deluge")
@@ -83,7 +137,7 @@ Available variables:
 
 Deluge is accessible via http://YOUR.IP.ADDR.ESS/deluge
 
-Available variables:
+**Available variables:**
 
 - `TZ`: Your timezone. Default: **America/Denver**
 - `PUID`: User UID. Default: **1000**
@@ -97,7 +151,7 @@ Plex is accessible via http://YOUR.IP.ADDR.ESS:3400/web
 
 The default library location is `./media`
 
-Available variables:
+**Available variables:**
 
  - `TZ`: Your timezone. Default: **America/Denver**
  - `PLEX_CLAIM`: Plex claim token. Get it from: **https://plex.tv/claim**
@@ -109,9 +163,11 @@ Available variables:
 
 ## Sonarr
 
+> The Sonarr container runs on Ubuntu 16.04 via Mono
+
 Sonarr is accessible via http://YOUR.IP.ADDR.ESS:8989
 
-Available variables:
+**Available variables:**
 
  - `TZ`: Your timezone. Default: **America/Denver**
  - `PUID`: User UID. Default: **1000**
@@ -216,3 +272,8 @@ In the directory `srv/nginx/vhost.d` you'll want to modify the example configura
 If SickRage is running, stop it. Go to `config/sickrage` and edit `config.ini`. Find the line that says
 `handle_reverse_proxy` and change the 0 to a 1. Now start SickRage again.
 
+
+# Credit
+
+I give credit where it's due and would like to give a shoutout to [LinuxServer.io](https://github.com/linuxserver). Parts of
+their Dockerfiles were borrowed and modified for this seedbox setup.
