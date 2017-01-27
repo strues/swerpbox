@@ -1,8 +1,0 @@
-#!/usr/bin/with-contenv bash
-
-export HOME=/config
-
-umask 002
-
-echo "Starting Filebot monitor"
-exec s6-setuidgid swerp /app/monitor.sh /config/filebot.conf

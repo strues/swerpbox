@@ -76,6 +76,8 @@ uid=1000(swerp) gid=1000(swerp) groups=1000(swerp)
 
 It is crucial to set PGID and PUID variables to the values matching the user running SwerpBox.
 
+**Note:** The file `buildall.sh` is meant for CI services. To start everything just run, `docker-compose up -d`
+
 # Containers
 
 ## Base Images

@@ -1,7 +1,0 @@
-#!/usr/bin/with-contenv bash
-
-export HOME=/config
-umask 0002
-
-echo "Starting Filebot run"
-exec s6-setuidgid swerp /config/filebot.sh
