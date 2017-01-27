@@ -5,12 +5,15 @@ MAINTAINER Steven Truesdell <steven@strues.io>
 # environment variables
 ENV PYTHON_EGG_CACHE="/config/plugins/.python-eggs"
 
-ARG BUILD_DATE
-ARG VERSION
-LABEL build_version="SwerpBox v:- ${VERSION} Built:- ${BUILD_DATE}"
+LABEL org.label-schema.vendor="SwerpBox: Deluge" \
+      org.label-schema.build-date="2017-01-27T00:12:00+00:00" \
+      org.label-schema.name="Deluge and Deluge-WebUI running on Alpine 3.5" \
+      org.label-schema.vcs-type="git" \
+      org.label-schema.vcs-url="https://github.com/strues/swerpbox"
 
 # install runtime packages
 RUN \
+  apk update && \
   apk add --no-cache ca-certificates libressl2.4-libssl p7zip unrar unzip && \
   apk add --no-cache --repository http://nl.alpinelinux.org/alpine/edge/testing deluge && \
 

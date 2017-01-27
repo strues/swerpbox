@@ -4,9 +4,11 @@ MAINTAINER Steven Truesdell <steven@strues.io>
 # set version for s6 overlay
 ARG OVERLAY_VERSION="v1.18.1.5"
 ARG OVERLAY_ARCH="amd64"
-ARG BUILD_DATE
-ARG VERSION
-LABEL build_version="SwerpBox Alpine Base v:- ${VERSION} Built:- ${BUILD_DATE}"
+LABEL org.label-schema.vendor="SwerpBox: Alpine Base" \
+      org.label-schema.build-date="2017-01-27T00:12:00+00:00" \
+      org.label-schema.name="Alpine 3.5 base image for Swerpbox" \
+      org.label-schema.vcs-type="git" \
+      org.label-schema.vcs-url="https://github.com/strues/swerpbox"
 
 # environment variables
 ENV PS1="$(whoami)@$(hostname):$(pwd)$ " \
@@ -14,6 +16,7 @@ HOME="/root" \
 TERM="xterm"
 
 RUN \
+ apk update && \
  apk add --no-cache --virtual=build-deps curl tar && \
  apk add --no-cache bash ca-certificates coreutils shadow tzdata && \
 
@@ -31,7 +34,7 @@ RUN \
 	/web \
 	/data \
 	/media \
-  /logs \
+    /logs \
 	/defaults && \
 
  apk del --purge build-deps && \

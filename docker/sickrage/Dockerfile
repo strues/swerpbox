@@ -2,7 +2,12 @@ FROM swerpbox/alpine-base
 
 MAINTAINER Steven Truesdell <steven@strues.io>
 
-LABEL build_version="SwerpBox SickRage"
+LABEL org.label-schema.vendor="SwerpBox: SickRage" \
+      org.label-schema.build-date="2017-01-27T00:12:00+00:00" \
+      org.label-schema.name="SickRage running on Alpine 3.5" \
+      org.label-schema.vcs-type="git" \
+      org.label-schema.vcs-url="https://github.com/strues/swerpbox"
+
 ARG SICK_REPO="https://github.com/SickRage/SickRage.git"
 ENV TERM="xterm"
 
@@ -17,7 +22,7 @@ RUN \
 
   # cleanup
   apk del --no-cache --purge build-deps && \
-  
+
   rm -rf /tmp/* /var/cache/apk/* /var/tmp/*
 
 # s6 scripts

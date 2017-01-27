@@ -2,6 +2,12 @@ FROM swerpbox/alpine-base
 
 MAINTAINER Steven Truesdell <steven@strues.io>
 
+LABEL org.label-schema.vendor="SwerpBox: Resilio-Sync" \
+      org.label-schema.build-date="2017-01-27T00:12:00+00:00" \
+      org.label-schema.name="Resilio-Sync running on Alpine 3.5" \
+      org.label-schema.vcs-type="git" \
+      org.label-schema.vcs-url="https://github.com/strues/swerpbox"
+
 ARG RESILIO_LOC="https://download-cdn.resilio.com/stable/linux-x64/resilio-sync_x64.tar.gz"
 
 RUN \

@@ -2,10 +2,11 @@ FROM swerpbox/alpine-base
 
 MAINTAINER Steven Truesdell <steven@strues.io>
 
-ARG BUILD_DATE
-ARG VERSION
-LABEL build_version="SwerpBox PlexPy v:- ${VERSION} Built:- ${BUILD_DATE}"
-
+LABEL org.label-schema.vendor="SwerpBox: PlexPy" \
+      org.label-schema.build-date="2017-01-27T00:12:00+00:00" \
+      org.label-schema.name="PlexPy running on Alpine 3.5" \
+      org.label-schema.vcs-type="git" \
+      org.label-schema.vcs-url="https://github.com/strues/swerpbox"
 RUN \
   apk --update add --no-cache curl freetype git lcms2 libjpeg-turbo libwebp \
   openjpeg p7zip py-lxml python py2-pip tar tiff unrar unzip wget xz zlib && \

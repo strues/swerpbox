@@ -1,10 +1,12 @@
 FROM swerpbox/alpine-base
 MAINTAINER Steven Truesdell <steven@strues.io>
 
-ARG BUILD_DATE
-ARG VERSION
 ARG RUTORRENT_ADDR="https://github.com/Novik/ruTorrent/archive/master.tar.gz"
-LABEL build_version="SwerpBox RuTorrent/rTorrent v:- ${VERSION} Built:- ${BUILD_DATE}"
+LABEL org.label-schema.vendor="SwerpBox: rTorrent/ruTorrent" \
+      org.label-schema.build-date="2017-01-27T00:12:00+00:00" \
+      org.label-schema.name="rTorrent and ruTorrent running on Alpine 3.5" \
+      org.label-schema.vcs-type="git" \
+      org.label-schema.vcs-url="https://github.com/strues/swerpbox"
 
 ARG MEDIAINF_VER="0.7.90"
 
@@ -20,13 +22,13 @@ RUN \
         logrotate \
         nginx \
         rtorrent \
-	      dtach \
+	    dtach \
         tar \
         unrar \
         unzip \
         wget \
-	      irssi \
-	      irssi-perl \
+	    irssi \
+	    irssi-perl \
         libressl-dev \
       	zlib \
       	zlib-dev \
@@ -43,7 +45,7 @@ RUN \
         php7-fpm \
         php7-json  \
         php7-mbstring \
-	      php7-sockets \
+	    php7-sockets \
         php7-opcache \
         php7-mcrypt \
         php7-xmlrpc \
@@ -55,7 +57,7 @@ RUN \
         automake \
         cppunit-dev \
         curl-dev \
-	      perl-dev \
+	    perl-dev \
         file \
         g++ \
         gcc \
@@ -115,5 +117,6 @@ RUN \
 COPY rootfs/ /
 
 # ports and volumes
+
 EXPOSE 443
 VOLUME ["/config", "/data", "/logs"]

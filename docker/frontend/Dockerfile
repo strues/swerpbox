@@ -1,12 +1,16 @@
 FROM swerpbox/alpine-base
 MAINTAINER Steven Truesdell <steven@strues.io>
 
-ARG NGINX_VERSION=1.11.8
+ARG NGINX_VERSION=1.11.9
 
 ARG BROTLI_COMMIT=1b364aeb42a0919e7c08646aa4f2f50e28d69fa5
 ARG NGX_BROTLI_COMMIT=12529813a9f8475718370a19007c7905601a62ad
 
-LABEL build_version="SwerpBox Frontend"
+LABEL org.label-schema.vendor="SwerpBox: Frontend" \
+      org.label-schema.build-date="2017-01-27T00:12:00+00:00" \
+      org.label-schema.name="Frontend (nginx) running on Alpine 3.5" \
+      org.label-schema.vcs-type="git" \
+      org.label-schema.vcs-url="https://github.com/strues/swerpbox"
 
 RUN GPG_KEYS=B0F4253373F8F6F510D42178520A9993A1C052F8 \
 	&& CONFIG="\
@@ -147,7 +151,7 @@ RUN GPG_KEYS=B0F4253373F8F6F510D42178520A9993A1C052F8 \
 	# forward request and error logs to docker log collector
 	&& ln -sf /dev/stdout /logs/frontend/nginx-access.log \
 	&& ln -sf /dev/stderr /logs/frontend/nginx-error.log \
-  && chmod -R 0777 /logs/frontend && \
+    && chmod -R 0777 /logs/frontend && \
 	mkdir -p /var/cache/nginx/client_temp && chmod 0777 /var/cache/nginx/client_temp
 
 RUN apk add --no-cache apache2-utils openssl

@@ -1,5 +1,5 @@
 IMAGE = swerpbox/frontend
-TAG = 1.1.0
+TAG = latest
 
 clean:
 	docker rmi $(IMAGE):$(TAG) $(CLEAN_OPTIONS) || true
