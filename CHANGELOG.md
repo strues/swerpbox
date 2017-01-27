@@ -1,5 +1,13 @@
 # Change Log
 
+## [January 27, 2017]
+
+### Added
+- Sonarr
+
+### Removed
+- Filebot
+
 ## [January 18, 2017]
 
 ### Fixed
