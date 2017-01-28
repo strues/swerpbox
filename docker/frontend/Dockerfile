@@ -154,11 +154,10 @@ RUN GPG_KEYS=B0F4253373F8F6F510D42178520A9993A1C052F8 \
     && chmod -R 0777 /logs/frontend && \
 	mkdir -p /var/cache/nginx/client_temp && chmod 0777 /var/cache/nginx/client_temp
 
-RUN apk add --no-cache apache2-utils openssl
+RUN apk add --no-cache apache2-utils
 
 EXPOSE 80 443
 
-COPY make-ssl /usr/local/bin
 COPY rootfs/ /
 
 VOLUME ["/config", "/web", "/data", "/media", "/logs"]

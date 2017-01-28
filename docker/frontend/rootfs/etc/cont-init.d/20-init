@@ -5,7 +5,9 @@ mkdir -p /logs/frontend
 chown -R swerp:swerp \
   /etc/nginx/certs \
   /etc/nginx/vhost.d \
+  /var/www/public \
   /logs/frontend
 
+chmod -R g+w /var/www/public /logs/frontend
 
 htpasswd -cb /etc/nginx/.htpasswd $USERNAME $PASSWORD
