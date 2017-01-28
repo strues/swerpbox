@@ -9,9 +9,9 @@
 
 To run this application you need Docker Engine 1.10.0+ and Docker Compose with a version 1.6.0 or later.
 
-If you don't have Docker installed and are running Ubuntu 16.04, you may use the setup script, `swerp-setup.sh`. It will install Docker and Docker Compose for you.
+If you don't have Docker installed and are running Ubuntu or Debian, you may use the setup script, `setup-docker.sh`. It will install Docker and Docker Compose for you.
 
-`bash swerp-setup.sh`
+`bash setup-docker.sh`
 
 
 ## Get Started
@@ -32,7 +32,11 @@ uid=1000(swerp) gid=1000(swerp) groups=1000(swerp)
 
 It is crucial to set PGID and PUID variables to the values matching the user running SwerpBox.
 
-**Note:** The file `buildall.sh` is meant for CI services. To start everything just run, `docker-compose up -d`
+**Note:** The file `buildall.sh` is meant for CI services. To start everything just run, `make start or docker-compose up -d`
+
+The `init.sh` script will create a user and group named swerp, set the GID and UID, and create the `.env` file for you.
+
+Running `make help` lists all commands available to you.
 
 ### Structure
 

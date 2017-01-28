@@ -32,11 +32,13 @@ function _updates() {
   if [[ $DISTRO == Ubuntu ]]; then
     echo "Package updates started..."
     apt-get update && apt-get -qqy upgrade
+  if [[ $DISTRO == Debian ]]; then
+    echo "Package updates started..."
+    apt-get update && apt-get -qqy upgrade
   else
     echo "Detected $DISTRO, as your OS. Unfortunately it is not supported. Yet."
     echo "Exiting..."
     exit 1
-
   fi
 }
 
@@ -50,21 +52,12 @@ function _installLinux() {
   --recv-keys 58118E89F3A912897C070ADBF76221572C52609D
 
   apt-get install linux-image-extra-$(uname -r) linux-image-extra-virtual
-
-  echo "deb https://apt.dockerproject.org/repo ubuntu-xenial main" | sudo tee /etc/apt/sources.list.d/docker.list
 }
 
 
 function _installDocker() {
   echo "Installing Docker..."
-  apt-get update
-
-  apt-get install docker-engine
-  echo "Docker installed"
-  echo
-  service docker start
-  echo "Enabling Docker in Systemctl"
-  systemctl enable docker
+  curl -sSL https://get.docker.com/ | sh
 }
 
 
@@ -72,6 +65,7 @@ function _installCompose() {
   echo "Installing Docker Compose..."
   curl -L "https://github.com/docker/compose/releases/download/1.9.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
   chmod +x /usr/local/bin/docker-compose
+  docker-compose --version
 }
 
 function _done() {
