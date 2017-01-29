@@ -9,20 +9,22 @@
 Table of Contents
 =================
 
-  * [Prerequisites](#prerequisites)
-  * [Getting Started](#getting-started)
-  * [Overview](docs/overview.md)
-  * [Commands](docs/commands.md)
+  * [Prerequisites](#prerequisites)  
+  * [Getting Started](#getting-started)  
+        * [Fresh](#fresh-os-install)  
+        * [Existing](#existing-system)  
+  * [Overview](docs/overview.md)  
+  * [Commands](docs/commands.md)  
   * [Advanced Configuration](docs/advanced.md)
-  * [Containers](#containers)
-        * [Frontend](docs/frontend.md)
-        * [rTorrent / ruTorrent](docs/rtorrent.md)
-        * [Deluge](docs/deluge.md)
-        * [Plex](docs/plex.md)
-        * [PlexPy](docs/plexpy.md)
-        * [Resilio Sync](docs/resilio.md)
-        * [Sonarr](docs/sonarr.md)
-  * [Credits](#credit)
+  * [Containers](#containers)  
+        * [Frontend](docs/frontend.md)  
+        * [rTorrent / ruTorrent](docs/rtorrent.md)  
+        * [Deluge](docs/deluge.md)  
+        * [Plex](docs/plex.md)   
+        * [PlexPy](docs/plexpy.md)  
+        * [Resilio Sync](docs/resilio.md)  
+        * [Sonarr](docs/sonarr.md)  
+  * [Credits](#credit)  
 
 
 Detailed documentation for containers is located within the docs folder. Clicking the link above will take you there.

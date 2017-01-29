@@ -22,13 +22,13 @@ RUN \
         logrotate \
         nginx \
         rtorrent \
-	      dtach \
+	    dtach \
         tar \
         unrar \
         unzip \
         wget \
-	      irssi \
-	      irssi-perl \
+	    irssi \
+	    irssi-perl \
         libressl-dev \
       	zlib \
       	zlib-dev \
@@ -45,7 +45,7 @@ RUN \
         php7-fpm \
         php7-json  \
         php7-mbstring \
-	      php7-sockets \
+	    php7-sockets \
         php7-opcache \
         php7-mcrypt \
         php7-xmlrpc \
@@ -57,7 +57,7 @@ RUN \
         automake \
         cppunit-dev \
         curl-dev \
-	      perl-dev \
+	    perl-dev \
         file \
         g++ \
         gcc \
