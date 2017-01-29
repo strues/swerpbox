@@ -12,10 +12,10 @@ mkdir -p /config/tmp /detach_sess
 
 [[ ! -f /config/.autodl/autodl2.cfg ]] && cp /defaults/autodl2.cfg /config/.autodl/autodl2.cfg
 
-[[ ! -f /web/rutorrent/plugins/autodl-irssi/conf.php ]] && \
-  cp /defaults/conf.php /web/rutorrent/plugins/autodl-irssi/conf.php
+[[ ! -f /var/www/public/rutorrent/plugins/autodl-irssi/conf.php ]] && \
+  cp /defaults/conf.php /var/www/public/rutorrent/plugins/autodl-irssi/conf.php
 
 # set perms
 chown swerp:swerp -R /config /detach_sess
-chown swerp:swerp -R /web/rutorrent
+chown swerp:swerp -R /var/www/public/rutorrent
 chown swerp:swerp /data

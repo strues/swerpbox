@@ -7,9 +7,9 @@
 [[ ! -d /home/swerp ]] && (mkdir /home/swerp && chown -R swerp:swerp /home/swerp)
 
 # get rutorrent plugin
-[[ ! -d /web/rutorrent/plugins/autodl-rutorrent/.git ]] && \
-(git clone https://github.com/autodl-community/autodl-rutorrent.git /web/rutorrent/plugins/autodl-irssi && \
-chown -R swerp:swerp /web/rutorrent/plugins/autodl-irssi/)
+[[ ! -d /var/www/public/rutorrent/plugins/autodl-rutorrent/.git ]] && \
+(git clone https://github.com/autodl-community/autodl-rutorrent.git /var/www/public/rutorrent/plugins/autodl-irssi && \
+chown -R swerp:swerp /var/www/public/rutorrent/plugins/autodl-irssi/)
 
 # get autodl script for irssi
 [[ ! -d /config/.irssi/scripts/.git ]] && (mkdir -p /config/.irssi/scripts && \
@@ -25,9 +25,9 @@ unzip -q -o -j /tmp/trackers.zip && \
 rm /tmp/trackers.zip
 
 # update rutorrent plugin
-cd /web/rutorrent/plugins/autodl-irssi/ || exit
+cd /var/www/public/rutorrent/plugins/autodl-irssi/ || exit
 git pull
-chown -R swerp:swerp /web/rutorrent/plugins/autodl-irssi
+chown -R swerp:swerp /var/www/public/rutorrent/plugins/autodl-irssi
 
 # make sure perl is in irssi startup
 echo "load perl" > /config/.irssi/startup

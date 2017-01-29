@@ -5,6 +5,7 @@ services:
     image: swerpbox/frontend
     # build: ./docker/frontend
     container_name: sb-frontend
+    depends_on: rutorrent
     restart: always
     ports:
       - "80:80"
@@ -12,15 +13,15 @@ services:
     env_file: .env
     volumes:
       - "./config:/config"
-      - "./srv/nginx:/etc/nginx"
-      - "./srv/public:/var/www/public"
+      - "./run/:/run:ro"
     volumes_from:
       - logs_data
+      - server_data
     networks:
       - swerpbox
 
   rutorrent:
-    image: swerpbox/rutorrent
+    image: swerpbox/rutorrent:1.2.0
     # build: ./docker/rutorrent
     container_name: sb-rutorrent
     restart: always
@@ -30,16 +31,17 @@ services:
       - "6881:6881/udp"
       - "5000:5000"
       - "41812:41812"
-      - "8000:8000"
     env_file: .env
     volumes:
       - "./config:/config"
       - "./data:/data"
       - "./media:/media"
+      - "./run/:/run/:rw"
     links:
       - frontend
     volumes_from:
       - logs_data
+      - server_data
     networks:
       - swerpbox
 
@@ -66,9 +68,9 @@ services:
       - swerpbox
 
   plex:
-    image: plexinc/pms-docker
-    container_name: sb-plex
-    restart: unless-stopped
+     image: plexinc/pms-docker
+     container_name: sb-plex
+     restart: unless-stopped
     ports:
       - "32400:32400/tcp"
       - "3005:3005/tcp"
@@ -106,21 +108,21 @@ services:
     links:
       - plex
 
-#   sickrage:
-#     image: swerpbox/sickrage
-#     # build: ./docker/sickrage
-#     container_name: sb-sickrage
-#     ports:
-#       - "8081:8081"
-#     env_file: .env
-#     networks:
-#       - swerpbox
-#     volumes:
-#       - "./config/sickrage:/config"
-#       - "./data:/downloads"
-#       - "./media/TV Shows:/tv"
-#     volumes_from:
-#       - logs_data
+  # sickrage:
+  #   image: swerpbox/sickrage
+  #   # build: ./docker/sickrage
+  #   container_name: sb-sickrage
+  #   ports:
+  #     - "8081:8081"
+  #   env_file: .env
+  #   networks:
+  #     - swerpbox
+  #   volumes:
+  #     - "./config/sickrage:/config"
+  #     - "./data:/downloads"
+  #     - "./media/TV Shows:/tv"
+  #   volumes_from:
+  #     - logs_data
 
   resilio:
     image: swerpbox/resilio-sync
@@ -162,6 +164,12 @@ services:
     image: tianon/true
     volumes:
       - "./logs:/logs"
+
+  server_data:
+    image: tianon/true
+    volumes:
+      - "./srv/nginx:/etc/nginx:ro"
+      - "./srv/public:/var/www/public"
 
 networks:
   swerpbox:

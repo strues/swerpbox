@@ -56,4 +56,4 @@ peer_exchange = no
 schedule = watch_directory_1,5,5,"load.start=/data/rtwatch/*.torrent"
 schedule = low_diskspace,5,60,close_low_diskspace=100M
 
-execute = {sh,-c,/usr/bin/php7 /web/rutorrent/php/initplugins.php swerp &}
+execute = {sh,-c,/usr/bin/php7 /var/www/public/rutorrent/php/initplugins.php swerp &}

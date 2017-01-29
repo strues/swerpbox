@@ -2,60 +2,35 @@
 
 # make folders
 mkdir -p \
-	/config{/log/nginx,/log/rtorrent,/log/rutorrent,/rutorrent-nginx,/php,/rtorrent/rtorrent_sess,/rutorrent/settings/users} \
-	/config/rutorrent/profiles{/settings,/torrents,/users,/tmp} \
-	/data{/complete,/downloading,/rtwatch} \
-	/run{/nginx,/php} \
-	/logs{/rutorrent-nginx,/rtorrent,/rutorrent} \
-	/var/lib/nginx/tmp/client_body
+    /config{/php,/rtorrent/rtorrent_sess} \
+    /data{/complete,/downloading,/rtwatch} \
+    /run/php \
+    /logs{/rtorrent,/rutorrent}
 
-# copy config
-PREV_DIR=$(pwd)
 
-cd /defaults/rutorrent-conf || exit
-	shopt -s globstar nullglob
-	for i in *
-	do
-		[[ ! -e "/config/rutorrent/settings/${i}" ]] && cp -v "${i}" "/config/rutorrent/settings/${i}"
-	done
-
-cd "${PREV_DIR}" || exit
-
-[[ ! -e /config/rutorrent-nginx/nginx.conf ]] && \
-	cp /defaults/nginx.conf /config/rutorrent-nginx/nginx.conf
-
+[[ ! -d /var/www/public/rutorrent ]] && (git clone https://github.com/Novik/ruTorrent.git /var/www/public/rutorrent  && chown -R swerp:swerp /var/www/public/rutorrent)
 
 [[ ! -e /config/rtorrent/rtorrent.rc ]] && \
-	cp /defaults/rtorrent.rc /config/rtorrent/rtorrent.rc
-cp -pr /config/rutorrent/settings/* /web/rutorrent/conf/
+    cp /defaults/rtorrent.rc /config/rtorrent/rtorrent.rc
 
 if [ ! -e "/config/php/php.ini" ]; then
-	cp /etc/php7/php.ini /config/php/php.ini
-	sed -i -e 's/\(register_argc_argv .*=\).*/\1 On/g' /config/php/php.ini
+    cp /etc/php7/php.ini /config/php/php.ini
+    sed -i -e 's/\(register_argc_argv .*=\).*/\1 On/g' /config/php/php.ini
 fi
 
 cp /config/php/php.ini /etc/php7/php.ini
-
-# create symlink for webui files
-[[ ! -e /var/www/localhost/rutorrent ]] && ln -s \
-/web/rutorrent /var/www/localhost/rutorrent
-
+rm -rf /var/www/public/rutorrent/conf/config.php && cp /defaults/rutorrent-conf/config.php /var/www/public/rutorrent/conf/config.php
 # delete lock file if exists
 [[ -e /config/rtorrent/rtorrent_sess/rtorrent.lock ]] && \
-	rm /config/rtorrent/rtorrent_sess/rtorrent.lock
+    rm /config/rtorrent/rtorrent_sess/rtorrent.lock
 
 # permissions
 chown swerp:swerp \
-	/data \
-	/data{/complete,/downloading,/rtwatch}
+    /data \
+    /data{/complete,/downloading,/rtwatch}
 
 chown -R swerp:swerp \
-	/config \
-	/run \
-	/logs \
-	/web/rutorrent \
-	/var/lib/nginx \
-	/var/www/localhost/rutorrent
+    /config \
+    /run \
+    /logs
 
-chmod -R 755 /config/rutorrent/profiles
-chmod 644 /etc/logrotate.d/*

@@ -134,9 +134,9 @@ rTorrent/ruTorrent
 [![](https://images.microbadger.com/badges/image/swerpbox/rutorrent.svg)](https://microbadger.com/images/swerpbox/rutorrent "SwerpBox ruTorrent") [![](https://images.microbadger.com/badges/version/swerpbox/rutorrent.svg)](https://microbadger.com/images/swerpbox/rutorrent "SwerpBox ruTorrent")
 
 
-> ruTorrent and rTorrent with Autodl-Irssi running on Alpine Linux. Compiled with Media Info
+> ruTorrent and rTorrent with Autodl-Irssi running on Alpine Linux. Compiled with Media Info.
 
-Includes PHP7 and Nginx 1.10.5.
+Includes PHP7.
 
 RuTorrent is accessible via http://YOUR.IP.ADDR.ESS/rutorrent/
 
@@ -149,8 +149,9 @@ RuTorrent is accessible via http://YOUR.IP.ADDR.ESS/rutorrent/
 **Volumes:**
 
 - `./data:/data`: Location of saved files.
-- `./logs:/logs`: Logs for rutorrent-nginx, php and rTorrent.
-- `./config:/config`: Configs for php, rutorrent-nginx, rTorrent, irssi, and autodl.
+- `./logs:/logs`: Logs for php and rTorrent.
+- `./srv/public:/var/www/public/rutorrent`: ruTorrent created in this container with autodl-irssi. Actually served from frontend.
+- `./config:/config`: Configs for php, rTorrent, irssi, and autodl.
 
 
 Deluge

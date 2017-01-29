@@ -3,7 +3,7 @@
 mkdir -p /logs/frontend
 
 chown -R swerp:swerp \
-  /etc/nginx/certs \
+  /etc/nginx \
   /etc/nginx/vhost.d \
   /var/www/public \
   /logs/frontend

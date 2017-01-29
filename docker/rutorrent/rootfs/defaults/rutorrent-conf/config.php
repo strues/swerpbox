@@ -39,9 +39,9 @@
 		"127.0.0.1",
 		"localhost",
 	);
-	$profilePath = '/config/rutorrent/profiles';
+	$profilePath = '/var/www/public/rutorrent/profiles';
 	$profileMask = 0777;
-	$tempDirectory = '/config/rutorrent/profiles/tmp/';
+	// $tempDirectory = '/config/rutorrent/profiles/tmp/';
 	$canUseXSendFile = true;
 
 	$locale = "UTF8";
