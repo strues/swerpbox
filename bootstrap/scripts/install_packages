@@ -1,0 +1,44 @@
+#! /usr/bin/env bash
+
+# DESCRIPTION
+# Installs default packages.
+
+# EXECUTION
+# Initialization
+function _installPackages() {
+    $INSTALL_COMMAND update
+    $INSTALL_COMMAND upgrade
+
+    # Build Tools
+    $INSTALL_COMMAND install build-essential # Essential for compiling source (includes GCC compiler, etc).
+    $INSTALL_COMMAND install libreadline6 libreadline6-dev # CLI.
+    $INSTALL_COMMAND install zlib1g zlib1g-dev # Compression.
+    $INSTALL_COMMAND install libssl-dev # SSL.
+    $INSTALL_COMMAND install libpcre3 libpcre3-dev # Regular Expressions.
+    $INSTALL_COMMAND install libyaml-dev # YAML.
+    $INSTALL_COMMAND install libxml2-dev # XML.
+    $INSTALL_COMMAND install libxslt-dev # XSLT.
+
+    # Package Management
+    $INSTALL_COMMAND install python-software-properties # Provides the "add-apt-repository" command.
+
+    # Git
+    $INSTALL_COMMAND install git-core
+}
+
+function _installDocker() {
+  echo "Installing Docker..."
+  curl -sSL https://get.docker.com/ | sh
+}
+
+
+function _installCompose() {
+  echo "Installing Docker Compose..."
+  curl -L "https://github.com/docker/compose/releases/download/1.9.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+  chmod +x /usr/local/bin/docker-compose
+  docker-compose --version
+}
+
+_installPackages
+_installDocker
+_installCompose

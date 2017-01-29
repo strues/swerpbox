@@ -14,14 +14,14 @@ Table of Contents
   * [Overview](docs/overview.md)
   * [Commands](docs/commands.md)
   * [Advanced Configuration](docs/advanced.md)
-  * [Containers](#containers)  
-        * [Frontend](docs/frontend.md)  
-        * [rTorrent / ruTorrent](docs/rtorrent.md)  
-        * [Deluge](docs/deluge.md)  
-        * [Plex](docs/plex.md)  
-        * [PlexPy](docs/plexpy.md)  
-        * [Resilio Sync](docs/resilio.md)  
-        * [Sonarr](docs/sonarr.md)  
+  * [Containers](#containers)
+        * [Frontend](docs/frontend.md)
+        * [rTorrent / ruTorrent](docs/rtorrent.md)
+        * [Deluge](docs/deluge.md)
+        * [Plex](docs/plex.md)
+        * [PlexPy](docs/plexpy.md)
+        * [Resilio Sync](docs/resilio.md)
+        * [Sonarr](docs/sonarr.md)
   * [Credits](#credit)
 
 
@@ -41,6 +41,30 @@ If you don't have Docker installed and are running Ubuntu or Debian, you may use
 Getting Started
 ==============
 
+Fresh OS Install
+---------
+
+SSH into your fresh server as the root user. Clone this repository with `git clone https://github.com/strues/swerpbox.git`.
+
+Edit the config.sh file in the `bootstrap/lib` directory and adjust the settings as you see fit, namely the following variables:
+
+- SERVER_IP
+- SERVER_HOSTNAME
+- USER_LOGIN
+- USER_PASS
+
+**Note:** for the minimum amount of potential problems, I recommend leaving the USER_LOGIN as swerp.
+
+Run `./bootstrap/bootstrap.sh` and let it do its thing.
+
+The script will create a mostly complete `.env` file for you in the home directory of the user defined by the `USER_LOGIN` variable. All of the SwerpBox files will be placed in the home directory as well.
+
+
+See the [README](bootstrap/README.md) for detailed instructions.
+
+Existing System
+---------
+
 Clone this repository or upload the contents of the repository to your web server. Where you place the SwerpBox files is where all the fun happens. I recommend working out of your home directory.
 
 Example: `/home/<USER>/swerpbox`
@@ -59,7 +83,7 @@ It is crucial to set PGID and PUID variables to the values matching the user run
 
 **Note:** The file `buildall.sh` is meant for CI services. To start everything just run, `make start or docker-compose up -d`
 
-The `init.sh` script will create a user and group named swerp, set the GID and UID, and create the `.env` file for you.
+The `create-user.sh` script will create a user and group named swerp, set the GID and UID, and create the `.env` file for you.
 
 Running `make help` lists all commands available to you.
 

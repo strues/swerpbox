@@ -1,0 +1,41 @@
+#! /usr/bin/env bash
+
+# DESCRIPTION
+# Configures server defaults.
+
+# EXECUTION
+function  _hostname() {
+    printf "Setting hostname...\n"
+    printf "$SERVER_HOSTNAME\n" > /etc/hostname
+    hostname -F /etc/hostname
+}
+
+function _hosts() {
+    printf "Updating hosts...\n"
+    printf "$SERVER_IP $SERVER_HOSTNAME $SERVER_HOSTNAME\n" >> /etc/hosts
+    hostname -f
+}
+
+function _time() {
+    printf "Setting UTC timezone...\n"
+    ln -sf /usr/share/zoneinfo/UTC /etc/localtime
+}
+
+function _locale() {
+echo 'LANGUAGE="en_US.UTF-8"' >> /etc/default/locale
+echo 'LC_ALL="en_US.UTF-8"' >> /etc/default/locale
+echo "en_US.UTF-8 UTF-8" > /etc/locale.gen
+  if [[ -e /usr/sbin/locale-gen ]]; then locale-gen >> /dev/null 2>&1
+  else
+    apt-get install locales -y >> /dev/null 2>&1
+    locale-gen >> /dev/null 2>&1
+    export LANG="en_US.UTF-8"
+    export LC_ALL="en_US.UTF-8"
+    export LANGUAGE="en_US.UTF-8"
+  fi
+}
+
+_hostname
+_hosts
+_time
+_locale

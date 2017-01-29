@@ -1,0 +1,69 @@
+#! /usr/bin/env bash
+
+# DESCRIPTION
+# Configures default user(s).
+SWERP_DIR=$( cd /home/$USER_LOGIN && pwd )
+ENV_FILE="${SWERP_DIR}/.env"
+
+# EXECUTION
+# Create user account.
+function _createUser() {
+    echo "Creating user: $USER_LOGIN"
+    useradd -u 1000 -m -s /bin/bash $USER_LOGIN
+    usermod -p $(printf $USER_PASS | openssl passwd -1 -stdin) $USER_LOGIN
+}
+
+function _addGroup() {
+    echo "Adding $USER_LOGIN to Docker group..."
+    usermod -a -G docker $USER_LOGIN
+    usermod -a -G admin $USER_LOGIN
+}
+
+function _setupHome() {
+    # Initialize SSH authorized keys for user account.
+    mkdir /home/$USER_LOGIN/.ssh
+    touch /home/$USER_LOGIN/.ssh/authorized_keys
+    chmod -R 700 /home/$USER_LOGIN/.ssh
+    chmod 644 /home/$USER_LOGIN/.ssh/authorized_keys
+}
+
+function _getSwerpbox() {
+    echo "Downloading files..."
+    git clone https://github.com/strues/swerpbox.git /home/$USER_LOGIN/temp
+    echo "Moving files..."
+    cp -r /home/$USER_LOGIN/temp/ /home/$USER_LOGIN/
+    rm -rf /home/$USER_LOGIN/temp
+    echo "Done"
+}
+
+function _makeEnv() {
+    SWERP_UID=$(id -u $USER_LOGIN)
+    SWERP_GID=$(id -g $USER_LOGIN)
+
+    if [[ ! -f ${ENV_FILE} ]]; then
+        touch "${ENV_FILE}"
+    else
+        echo '' > "${ENV_FILE}"
+    fi
+    echo "Creating your .env file..."
+    echo ""
+    echo ""
+    echo "PUID=${SWERP_UID}" >> .env
+    echo "PGID=${SWERP_GID}" >> .env
+    echo "PLEX_UID=${SWERP_UID}" >> .env
+    echo "PLEX_GID=${SWERP_GID}" >> .env
+    echo "USERNAME=swerp" >> .env
+    echo "PASSWORD=swerp" >> .env
+    echo "TZ=America/Denver" >> .env
+    echo "PLEX_CLAIM=" >> .env
+    echo "ADVERTISE_IP=" >> .env
+    echo "CHANGE_CONFIG_DIR_OWNERSHIP=false" >> .env
+
+    echo "Done creating .env file. Please fill in the blank entries."
+}
+
+_createUser
+_addGroup
+_setupHome
+_getSwerpbox
+_makeEnv

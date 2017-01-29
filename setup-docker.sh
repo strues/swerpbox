@@ -32,6 +32,11 @@ function _updates() {
   if [[ $DISTRO == Ubuntu ]]; then
     echo "Package updates started..."
     apt-get update && apt-get -qqy upgrade
+  else
+    echo "Detected $DISTRO, as your OS. Unfortunately it is not supported. Yet."
+    echo "Exiting..."
+    exit 1
+  fi
   if [[ $DISTRO == Debian ]]; then
     echo "Package updates started..."
     apt-get update && apt-get -qqy upgrade

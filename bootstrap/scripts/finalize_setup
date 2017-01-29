@@ -1,0 +1,10 @@
+#! /usr/bin/env bash
+
+# DESCRIPTION
+# Configures final server settings (or those which must be set last).
+
+# EXECUTION
+printf "Setting the message of the day...\n"
+printf "Welcome to SwerpBox!\n" > /etc/motd.tail
+printf '' > /etc/update-motd.d/00-header
+printf '' > /etc/update-motd.d/10-help-text
