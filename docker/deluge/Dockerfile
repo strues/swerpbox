@@ -13,21 +13,21 @@ LABEL org.label-schema.vendor="SwerpBox: Deluge" \
 
 # install runtime packages
 RUN \
+  echo "@testing http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories && \
   apk update && \
-  apk add --no-cache ca-certificates libressl2.4-libssl p7zip unrar unzip && \
-  apk add --no-cache --repository http://nl.alpinelinux.org/alpine/edge/testing deluge && \
+  apk add --no-cache ca-certificates p7zip unrar unzip && \
 
-# install build packages
- apk add --no-cache --virtual=build-dependencies g++ gcc libffi-dev libressl-dev py2-pip python2-dev && \
+  apk add --no-cache deluge@testing py2-pip && \
 
 # install pip packages
- pip install --no-cache-dir -U incremental pip && \
- pip install --no-cache-dir -U crypto mako markupsafe pyopenssl service_identity six twisted zope.interface && \
+
+ pip install service_identity && \
  mkdir -p /config/plugins /logs/deluge && \
 
-
 # cleanup
- apk del --purge build-dependencies && rm -rf /root/.cache
+ apk del --purge py2-pip && \
+ rm -rf /root/.cache && \
+ rm -rf /var/cache/apk/*
 
 # add local files
 COPY rootfs/ /

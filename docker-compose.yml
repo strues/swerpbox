@@ -2,18 +2,19 @@ version: '2'
 
 services:
   frontend:
-    image: swerpbox/frontend
+    image: swerpbox/frontend:1.1.1
     # build: ./docker/frontend
     container_name: sb-frontend
-    depends_on: rutorrent
+    depends_on:
+      - rutorrent
     restart: always
     ports:
-      - "80:80"
-      - "443:443"
+      - "80:80/tcp"
+      - "443:443/tcp"
     env_file: .env
     volumes:
       - "./config:/config"
-      - "./run/:/run:ro"
+      - "./run/:/run"
     volumes_from:
       - logs_data
       - server_data
@@ -21,15 +22,15 @@ services:
       - swerpbox
 
   rutorrent:
-    image: swerpbox/rutorrent:1.2.0
+    image: swerpbox/rutorrent:1.1.1
     # build: ./docker/rutorrent
     container_name: sb-rutorrent
     restart: always
     ports:
-      - "49123:49123"
+      - "49123:49123/tcp"
       - "49123:49123/udp"
       - "6881:6881/udp"
-      - "5000:5000"
+      - "5000:5000/tcp"
       - "41812:41812"
     env_file: .env
     volumes:
@@ -37,8 +38,6 @@ services:
       - "./data:/data"
       - "./media:/media"
       - "./run/:/run/:rw"
-    links:
-      - frontend
     volumes_from:
       - logs_data
       - server_data
@@ -46,15 +45,15 @@ services:
       - swerpbox
 
   deluge:
-    image: swerpbox/deluge
+    image: swerpbox/deluge:1.1.1
     # build: ./docker/deluge
     container_name: sb-deluge
     restart: always
     ports:
-      - "58946:58946"
+      - "58946:58946/tcp"
       - "58946:58946/udp"
-      - "58846:58846"
-      - "0.0.0.0:8112:8112"
+      - "58846:58846/tcp"
+      - "8112:8112/tcp"
     env_file: .env
     links:
       - frontend
@@ -68,9 +67,9 @@ services:
       - swerpbox
 
   plex:
-     image: plexinc/pms-docker
-     container_name: sb-plex
-     restart: unless-stopped
+    image: plexinc/pms-docker
+    container_name: sb-plex
+    restart: unless-stopped
     ports:
       - "32400:32400/tcp"
       - "3005:3005/tcp"
@@ -91,7 +90,7 @@ services:
       - "./media:/data"
 
   plexpy:
-    image: swerpbox/plexpy
+    image: swerpbox/plexpy:1.1.1
     # build: ./docker/plexpy
     container_name: sb-plexpy
     restart: always
@@ -99,7 +98,7 @@ services:
       - "8181:8181"
     env_file: .env
     volumes:
-      - "./config/plex/Library/Application\ Support/Plex\ Media\ Server/Logs/:/logs:ro"
+      - "./config/plex/Library/Application\ Support/Plex\ Media\ Server/Logs/:/logs"
       - "./config/plexpy:/config"
     networks:
       - swerpbox
@@ -109,7 +108,7 @@ services:
       - plex
 
   # sickrage:
-  #   image: swerpbox/sickrage
+  #   image: swerpbox/sickrage:1.1.1
   #   # build: ./docker/sickrage
   #   container_name: sb-sickrage
   #   ports:
@@ -125,7 +124,7 @@ services:
   #     - logs_data
 
   resilio:
-    image: swerpbox/resilio-sync
+    image: swerpbox/resilio-sync:1.1.1
     #build: ./docker/resilio-sync
     container_name: sb-resilio
     ports:
@@ -141,11 +140,11 @@ services:
       - logs_data
 
   sonarr:
-    image: swerpbox/sonarr
+    image: swerpbox/sonarr:1.1.1
     # build: ./docker/sonarr
     container_name: sb-sonarr
     ports:
-      - "8989:8989"
+      - "8989:8989/tcp"
     env_file: .env
     networks:
       - swerpbox

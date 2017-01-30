@@ -27,7 +27,8 @@ rm /tmp/trackers.zip
 # update rutorrent plugin
 cd /var/www/public/rutorrent/plugins/autodl-irssi/ || exit
 git pull
-chown -R swerp:swerp /var/www/public/rutorrent/plugins/autodl-irssi
+chown -R swerp:swerp /var/www/public/rutorrent/plugins/autodl-irssi && \
+mkdir -p /var/www/public/rutorrent/profiles/torrents && chown -R swerp:swerp /var/www/public/rutorrent/profiles/torrents
 
 # make sure perl is in irssi startup
 echo "load perl" > /config/.irssi/startup

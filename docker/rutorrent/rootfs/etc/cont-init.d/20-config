@@ -4,11 +4,13 @@
 mkdir -p \
     /config{/php,/rtorrent/rtorrent_sess} \
     /data{/complete,/downloading,/rtwatch} \
+    /data/rtwatch{/tvshows,/movies,/music} \
     /run/php \
-    /logs{/rtorrent,/rutorrent}
+    /logs/rtorrent
 
 
-[[ ! -d /var/www/public/rutorrent ]] && (git clone https://github.com/Novik/ruTorrent.git /var/www/public/rutorrent  && chown -R swerp:swerp /var/www/public/rutorrent)
+[[ ! -d /var/www/public/rutorrent ]] && (git clone https://github.com/Novik/ruTorrent.git /var/www/public/rutorrent  && \
+chown -R swerp:swerp /var/www/public/rutorrent && chmod -R 775 /var/www/public/rutorrent/)
 
 [[ ! -e /config/rtorrent/rtorrent.rc ]] && \
     cp /defaults/rtorrent.rc /config/rtorrent/rtorrent.rc
@@ -25,7 +27,7 @@ rm -rf /var/www/public/rutorrent/conf/config.php && cp /defaults/rutorrent-conf/
     rm /config/rtorrent/rtorrent_sess/rtorrent.lock
 
 # permissions
-chown swerp:swerp \
+chown -R swerp:swerp \
     /data \
     /data{/complete,/downloading,/rtwatch}
 
@@ -33,4 +35,3 @@ chown -R swerp:swerp \
     /config \
     /run \
     /logs
-

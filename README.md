@@ -169,6 +169,9 @@ Deluge is accessible via http://YOUR.IP.ADDR.ESS/deluge
 - `PUID`: User UID. Default: **1000**
 - `PGID`: User group id. Default: **1000**
 
+Please checkout the Deluge docs section located [here](docs/deluge.md) for initial configuration instructions.
+
+
 Plex
 ----------
 

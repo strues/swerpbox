@@ -3,7 +3,7 @@ MAINTAINER Steven Truesdell <steven@strues.io>
 
 ARG RUTORRENT_ADDR="https://github.com/Novik/ruTorrent/archive/master.tar.gz"
 LABEL org.label-schema.vendor="SwerpBox: rTorrent/ruTorrent" \
-      org.label-schema.build-date="2017-01-27T00:12:00+00:00" \
+      org.label-schema.build-date="2017-01-29T00:12:00+00:00" \
       org.label-schema.name="rTorrent and ruTorrent running on Alpine 3.5" \
       org.label-schema.vcs-type="git" \
       org.label-schema.vcs-url="https://github.com/strues/swerpbox"
@@ -12,56 +12,56 @@ ARG MEDIAINF_VER="0.7.90"
 
 # install runtime packages
 RUN \
- apk add --no-cache \
-        ca-certificates \
-        curl \
-        fcgi \
-        ffmpeg \
-        geoip \
-        gzip \
-        rtorrent \
-	    dtach \
-        tar \
-        unrar \
-        unzip \
-        wget \
-	    irssi \
-	    irssi-perl \
-        libressl-dev \
-      	zlib \
-      	zlib-dev \
-      	libxml2-dev \
-      	perl-archive-zip \
-      	perl-net-ssleay \
-      	perl-digest-sha1 \
-      	git \
-        zip && \
+  apk add --no-cache \
+    ca-certificates \
+    curl \
+    fcgi \
+    ffmpeg \
+    geoip \
+    gzip \
+    rtorrent \
+    dtach \
+    tar \
+    unrar \
+    unzip \
+    wget \
+    irssi \
+    irssi-perl \
+    libressl-dev \
+    zlib \
+    zlib-dev \
+    libxml2-dev \
+    perl-archive-zip \
+    perl-net-ssleay \
+    perl-digest-sha1 \
+    git \
+    zip && \
  # php packages
- apk add --no-cache --repository http://nl.alpinelinux.org/alpine/edge/community \
-        php7 \
-        php7-cgi \
-        php7-fpm \
-        php7-json  \
-        php7-mbstring \
-	    php7-sockets \
-        php7-opcache \
-        php7-mcrypt \
-        php7-xmlrpc \
-        php7-pear && \
+  apk add --no-cache --repository http://nl.alpinelinux.org/alpine/edge/community \
+    php7 \
+    php7-cgi \
+    php7-fpm \
+    php7-json  \
+    php7-mbstring \
+    php7-sockets \
+    php7-opcache \
+    php7-mcrypt \
+    php7-xmlrpc \
+    php7-pear && \
 
 # install build packages
- apk add --no-cache --virtual=build-deps \
-        autoconf \
-        automake \
-        cppunit-dev \
-        curl-dev \
-	    perl-dev \
-        file \
-        g++ \
-        gcc \
-        libtool \
-        make \
-        ncurses-dev && \
+  apk add --no-cache --virtual=build-deps \
+    autoconf \
+    automake \
+    cppunit-dev \
+    curl-dev \
+    perl-dev \
+    file \
+    g++ \
+    gcc \
+    libtool \
+    make \
+    ncurses-dev && \
 
 # install webui
  mkdir -p /var/www/public/rutorrent /defaults/rutorrent-conf && \

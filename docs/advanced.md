@@ -19,19 +19,19 @@ Run the following command to generate certificates:
 
 ```
 docker run --rm \
-    -p 80:80 \
-    -p 443:443 \
-    --name letsencrypt \
-    -v /home/swerp/swerpbox/srv/nginx/certs:/etc/letsencrypt \
-    -e "LETSENCRYPT_EMAIL="email@email.com" \
-    -e "LETSENCRYPT_DOMAIN1=yourdomain.com" \
-    -e "LETSENCRYPT_DOMAIN2=www.yourdomain.com" \
-    -e "LETSENCRYPT_DOMAIN3=rutorrent.yourdomain.com" \
-    -e "LETSENCRYPT_DOMAIN4=deluge.yourdomain.com" \
-    -e "LETSENCRYPT_DOMAIN5=plex.yourdomain.com" \
-    -e "LETSENCRYPT_DOMAIN6=plexpy.yourdomain.com" \
-    -e "LETSENCRYPT_DOMAIN7=sickrage.yourdomain.com" \
-    blacklabelops/letsencrypt install
+-p 80:80 \
+-p 443:443 \
+--name letsencrypt \
+-v /home/swerp/swerpbox/srv/nginx/certs:/etc/letsencrypt \
+-e "LETSENCRYPT_EMAIL=email@email.com" \
+-e "LETSENCRYPT_DOMAIN1=yourdomain.com" \
+-e "LETSENCRYPT_DOMAIN2=www.yourdomain.com" \
+-e "LETSENCRYPT_DOMAIN3=rutorrent.yourdomain.com" \
+-e "LETSENCRYPT_DOMAIN4=deluge.yourdomain.com" \
+-e "LETSENCRYPT_DOMAIN5=plex.yourdomain.com" \
+-e "LETSENCRYPT_DOMAIN6=plexpy.yourdomain.com" \
+-e "LETSENCRYPT_DOMAIN7=sickrage.yourdomain.com" \
+blacklabelops/letsencrypt install
 ```
 
 Replace the `-e "LETSENCRYPT_EMAIL="email@email.com"` with your email address and all the **yourdomain.com** with your actual

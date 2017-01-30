@@ -160,4 +160,4 @@ EXPOSE 80 443
 
 COPY rootfs/ /
 
-VOLUME ["/config", "/web", "/data", "/media", "/logs"]
+VOLUME ["/config", "/data", "/logs"]
