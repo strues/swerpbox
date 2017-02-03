@@ -1,4 +1,8 @@
-version: '2'
+version: '3'
+
+networks:
+  swerpbox:
+    driver: bridge
 
 services:
   frontend:
@@ -107,22 +111,6 @@ services:
     links:
       - plex
 
-  # sickrage:
-  #   image: swerpbox/sickrage:1.1.1
-  #   # build: ./docker/sickrage
-  #   container_name: sb-sickrage
-  #   ports:
-  #     - "8081:8081"
-  #   env_file: .env
-  #   networks:
-  #     - swerpbox
-  #   volumes:
-  #     - "./config/sickrage:/config"
-  #     - "./data:/downloads"
-  #     - "./media/TV Shows:/tv"
-  #   volumes_from:
-  #     - logs_data
-
   resilio:
     image: swerpbox/resilio-sync:1.1.1
     #build: ./docker/resilio-sync
@@ -186,7 +174,3 @@ services:
     volumes:
       - "./srv/nginx:/etc/nginx:ro"
       - "./srv/public:/var/www/public"
-
-networks:
-  swerpbox:
-    driver: bridge

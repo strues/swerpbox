@@ -1,11 +1,11 @@
 FROM alpine:3.5
 MAINTAINER Steven Truesdell <steven@strues.io>
 
-# set version for s6 overlay
+# set version for s6 overlay
 ARG OVERLAY_VERSION="v1.19.1.1"
 ARG OVERLAY_ARCH="amd64"
 LABEL org.label-schema.vendor="SwerpBox: Alpine Base" \
-      org.label-schema.build-date="2017-01-29T00:12:00+00:00" \
+      org.label-schema.build-date="2017-02-02T00:12:00+00:00" \
       org.label-schema.name="Alpine 3.5 base image for Swerpbox" \
       org.label-schema.vcs-type="git" \
       org.label-schema.vcs-url="https://github.com/strues/swerpbox"
@@ -33,11 +33,11 @@ RUN \
 	/config \
 	/data \
 	/media \
-    /logs \
+  /logs \
 	/defaults && \
 
  apk del --purge build-deps && \
- rm -rf /tmp/*
+ rm -rf /tmp/* /var/cache/apk/*
 
 COPY rootfs/ /
 
