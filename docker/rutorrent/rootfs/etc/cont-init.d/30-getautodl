@@ -1,8 +1,7 @@
 #!/usr/bin/with-contenv bash
+
 # create .autodl config dir and link
-[[ ! -d /config/.autodl ]] && \
-  (mkdir /config/.autodl && \
-    chown -R swerp:swerp /config/.autodl)
+[[ ! -d /config/.autodl ]] && (mkdir /config/.autodl && chown -R swerp:swerp /config/.autodl)
 
 [[ ! -d /home/swerp ]] && (mkdir /home/swerp && chown -R swerp:swerp /home/swerp)
 

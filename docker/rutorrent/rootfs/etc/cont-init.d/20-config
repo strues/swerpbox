@@ -9,7 +9,7 @@ mkdir -p \
     /logs/rtorrent
 
 
-[[ ! -d /var/www/public/rutorrent ]] && (git clone https://github.com/Novik/ruTorrent.git /var/www/public/rutorrent  && \
+[[ ! -d /var/www/public/rutorrent ]] && (git clone https://github.com/Novik/ruTorrent.git /var/www/public/rutorrent && \
 chown -R swerp:swerp /var/www/public/rutorrent && chmod -R 775 /var/www/public/rutorrent/)
 
 [[ ! -e /config/rtorrent/rtorrent.rc ]] && \

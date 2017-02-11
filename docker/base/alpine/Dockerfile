@@ -3,7 +3,6 @@ MAINTAINER Steven Truesdell <steven@strues.io>
 
 # set version for s6 overlay
 ARG OVERLAY_VERSION="v1.19.1.1"
-ARG OVERLAY_ARCH="amd64"
 LABEL org.label-schema.vendor="SwerpBox: Alpine Base" \
       org.label-schema.build-date="2017-02-02T00:12:00+00:00" \
       org.label-schema.name="Alpine 3.5 base image for Swerpbox" \
@@ -11,9 +10,8 @@ LABEL org.label-schema.vendor="SwerpBox: Alpine Base" \
       org.label-schema.vcs-url="https://github.com/strues/swerpbox"
 
 # environment variables
-ENV PS1="$(whoami)@$(hostname):$(pwd)$ " \
-HOME="/root" \
-TERM="xterm"
+ENV HOME="/root" \
+    TERM="xterm"
 
 RUN \
  apk update && \
@@ -21,7 +19,7 @@ RUN \
  apk add --no-cache bash ca-certificates coreutils shadow tzdata && \
 
  curl -o /tmp/s6-overlay.tar.gz -L \
-	"https://github.com/just-containers/s6-overlay/releases/download/${OVERLAY_VERSION}/s6-overlay-${OVERLAY_ARCH}.tar.gz" && \
+	"https://github.com/just-containers/s6-overlay/releases/download/${OVERLAY_VERSION}/s6-overlay-amd64.tar.gz" && \
  tar xfz /tmp/s6-overlay.tar.gz -C / && \
 
  groupmod -g 1000 users && \

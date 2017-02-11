@@ -17,6 +17,7 @@ services:
       - "443:443/tcp"
     env_file: .env
     volumes:
+      - "/etc/localtime:/etc/localtime:ro"
       - "./config:/config"
       - "./run/:/run"
     volumes_from:
@@ -38,6 +39,7 @@ services:
       - "41812:41812"
     env_file: .env
     volumes:
+      - "/etc/localtime:/etc/localtime:ro"
       - "./config:/config"
       - "./data:/data"
       - "./media:/media"
@@ -62,6 +64,7 @@ services:
     links:
       - frontend
     volumes:
+      - "/etc/localtime:/etc/localtime:ro"
       - "./config/deluge:/config"
       - "./data:/data"
       - "./media:/media"
@@ -89,6 +92,7 @@ services:
     networks:
       - swerpbox
     volumes:
+      - "/etc/localtime:/etc/localtime:ro"
       - "./config/plex:/config"
       - "./config/plex/tmp:/transcode"
       - "./media:/data"
@@ -102,6 +106,7 @@ services:
       - "8181:8181"
     env_file: .env
     volumes:
+      - "/etc/localtime:/etc/localtime:ro"
       - "./config/plex/Library/Application\ Support/Plex\ Media\ Server/Logs/:/logs"
       - "./config/plexpy:/config"
     networks:

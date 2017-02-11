@@ -68,10 +68,6 @@ directory.default.set = (cat,(cfg.basedir),"downloading")
 # Session
 session = /config/rtorrent/rtorrent_sess
 
-# Removes torrents from client when its metafile (torrent file) has been deleted manually or by a script.
-schedule2 = untied_directory, 10, 10, stop_untied=
-schedule2 = untied_directory, 10, 10, close_untied=
-schedule2 = untied_directory, 10, 10, remove_untied=
 
 download_rate = 0
 upload_rate = 0
@@ -81,21 +77,26 @@ bind = 0.0.0.0
 check_hash = no
 use_udp_trackers = yes
 
-schedule2 = watch_directory_1,10,10,"load.start=/data/rtwatch/tvshows/*.torrent,d.custom1.set=/data/complete/tvshows/"
-schedule2 = watch_directory_2,10,10,"load.start=/data/rtwatch/movies/*.torrent,d.custom1.set=/data/complete/movies/"
-schedule2 = watch_directory_3,10,10,"load.start=/data/rtwatch/music/*.torrent,d.custom1.set=/data/complete/music/"
-
-
-# gets the full path of data of a torrent (it's a workaround for the possibly empty 'd.base_path' attribute)
-method.insert = d.get_data_full_path, simple, "branch=((d.is_multi_file)),((cat,(d.directory))),((cat,(d.directory),/,(d.name)))"
-# On completion, move the torrent to the directory from custom1.
-method.set_key =event.download.finished,move_complete,"d.directory.set=$d.custom1= ;execute=mv,-u,$d.get_data_full_path=,$d.custom1="
-
 print = (cat,"directory.default ",(directory.default))
 print = (cat,"Complete folfer ",(cfg.complete))
 print = (cat,"Logging to ",(cfg.logfile))
 log.open_file = "log", (cfg.logfile)
 log.add_output = "info", "log"
+
+# Watch a directory for new torrents, and stop those that have been deleted.
+schedule = watch_directory_0,5,5,"load.start=/data/rtwatch/*.torrent"
+schedule = watch_directory_1,5,5,"load.start=/data/rtwatch/tvshows/*.torrent,d.set_custom1=tvshows,d.set_directory=/data/complete/tvshows"
+schedule = watch_directory_2,5,5,"load.start=/data/rtwatch/movies/*.torrent,d.set_custom1=movies,set_directory=/data/complete/movies"
+schedule = watch_directory_3,5,5,"load.start=/data/rtwatch/music/*.torrent,d.set_custom1=music,set_directory=/data/complete/music"
+#schedule = tied_directory,6,5,start_tied=
+schedule = untied_directory,5,5,stop_untied=
+
+# Close torrents when diskspace is low.
+schedule = low_diskspace,5,60,close_low_diskspace=100M
+
+# Add new method to get finished dir, and move files based on labels
+system.method.insert = d.get_finished_dir,simple,"cat=/data/complete/,$d.get_custom1="
+system.method.set_key = event.download.finished,move_complete,"d.set_directory=$d.get_finished_dir=;execute=mkdir,-p,$d.get_finished_dir=;execute=mv,-u,$d.get_base_path=,$d.get_finished_dir="
 
 
 execute = {sh,-c,/usr/bin/php7 /var/www/public/rutorrent/php/initplugins.php swerp &}

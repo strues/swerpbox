@@ -17,5 +17,5 @@ mkdir -p /config/tmp /detach_sess
 
 # set perms
 chown swerp:swerp -R /config /detach_sess
-chown swerp:swerp -R /var/www/public/rutorrent
-chown swerp:swerp /data
+chown swerp:swerp -R /var/www/public/rutorrent/
+chown swerp:swerp -R /data
