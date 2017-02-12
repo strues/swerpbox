@@ -9,8 +9,6 @@ services:
     image: swerpbox/frontend:1.1.1
     # build: ./docker/frontend
     container_name: sb-frontend
-    depends_on:
-      - rutorrent
     restart: always
     ports:
       - "80:80/tcp"
@@ -18,6 +16,7 @@ services:
     env_file: .env
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
+      - "/dev/rtc:/dev/rtc:ro"
       - "./config:/config"
       - "./run/:/run"
     volumes_from:
@@ -38,8 +37,11 @@ services:
       - "5000:5000/tcp"
       - "41812:41812"
     env_file: .env
+    depends_on:
+      - frontend
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
+      - "/dev/rtc:/dev/rtc:ro"
       - "./config:/config"
       - "./data:/data"
       - "./media:/media"
@@ -61,10 +63,11 @@ services:
       - "58846:58846/tcp"
       - "8112:8112/tcp"
     env_file: .env
-    links:
+    depends_on:
       - frontend
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
+      - "/dev/rtc:/dev/rtc:ro"
       - "./config/deluge:/config"
       - "./data:/data"
       - "./media:/media"
@@ -93,6 +96,7 @@ services:
       - swerpbox
     volumes:
       - "/etc/localtime:/etc/localtime:ro"
+      - "/dev/rtc:/dev/rtc:ro"
       - "./config/plex:/config"
       - "./config/plex/tmp:/transcode"
       - "./media:/data"
@@ -141,10 +145,11 @@ services:
     env_file: .env
     networks:
       - swerpbox
-    links:
+    depends_on:
       - frontend
-      - rutorrent
     volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "/dev/rtc:/dev/rtc:ro"
       - "./config/sonarr:/config"
       - "./data:/data"
       - "./data/downloading:/downloads"
