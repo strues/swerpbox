@@ -45,14 +45,14 @@ network.port_random.set = no
 # Limits for file handle resources, this is optimized for
 # an `ulimit` of 1024 (a common default). You MUST leave
 # a ceiling of handles reserved for rTorrent's internal needs!
-network.http.max_open.set = 150
+network.http.max_open.set = 250
 network.max_open_files.set = 65000
 network.max_open_sockets.set = 600
 network.http.dns_cache_timeout.set = 25
 encryption = allow_incoming,try_outgoing,enable_retry
 
 # default for network.xmlrpc.size_limit : 524288 (xmlrpc_size_limit)
-network.xmlrpc.size_limit.set = 2M
+network.xmlrpc.size_limit.set = 4M
 
 # Memory resource usage (increase if you have a large number of items loaded,
 # and/or the available resources to spend)
@@ -85,9 +85,9 @@ log.add_output = "info", "log"
 
 # Watch a directory for new torrents, and stop those that have been deleted.
 schedule = watch_directory_0,5,5,"load.start=/data/rtwatch/*.torrent"
-schedule = watch_directory_1,5,5,"load.start=/data/rtwatch/tvshows/*.torrent,d.set_custom1=tvshows,d.set_directory=/data/complete/tvshows"
-schedule = watch_directory_2,5,5,"load.start=/data/rtwatch/movies/*.torrent,d.set_custom1=movies,set_directory=/data/complete/movies"
-schedule = watch_directory_3,5,5,"load.start=/data/rtwatch/music/*.torrent,d.set_custom1=music,set_directory=/data/complete/music"
+#schedule = watch_directory_1,5,5,"load.start=/data/rtwatch/tvshows/*.torrent,d.set_custom1=tvshows,d.set_directory=/data/complete/tvshows"
+#schedule = watch_directory_2,5,5,"load.start=/data/rtwatch/movies/*.torrent,d.set_custom1=movies,set_directory=/data/complete/movies"
+#schedule = watch_directory_3,5,5,"load.start=/data/rtwatch/music/*.torrent,d.set_custom1=music,set_directory=/data/complete/music"
 #schedule = tied_directory,6,5,start_tied=
 schedule = untied_directory,5,5,stop_untied=
 
@@ -95,8 +95,8 @@ schedule = untied_directory,5,5,stop_untied=
 schedule = low_diskspace,5,60,close_low_diskspace=100M
 
 # Add new method to get finished dir, and move files based on labels
-system.method.insert = d.get_finished_dir,simple,"cat=/data/complete/,$d.get_custom1="
-system.method.set_key = event.download.finished,move_complete,"d.set_directory=$d.get_finished_dir=;execute=mkdir,-p,$d.get_finished_dir=;execute=mv,-u,$d.get_base_path=,$d.get_finished_dir="
+# system.method.insert = d.get_finished_dir,simple,"cat=/data/complete/,$d.get_custom1="
+# system.method.set_key = event.download.finished,move_complete,"d.set_directory=$d.get_finished_dir=;execute=mkdir,-p,$d.get_finished_dir=;execute=mv,-u,$d.get_base_path=,$d.get_finished_dir="
 
 
 execute = {sh,-c,/usr/bin/php7 /var/www/public/rutorrent/php/initplugins.php swerp &}

@@ -1,15 +1,17 @@
 FROM swerpbox/alpine-base
 
-ARG RUTORRENT_ADDR="https://github.com/Novik/ruTorrent/archive/master.tar.gz"
 LABEL org.label-schema.vendor="SwerpBox: rTorrent/ruTorrent" \
-      org.label-schema.build-date="2017-01-29T00:12:00+00:00" \
+      org.label-schema.build-date="2017-02-12T00:12:00+00:00" \
       org.label-schema.name="rTorrent and ruTorrent running on Alpine 3.5" \
       org.label-schema.vcs-type="git" \
       org.label-schema.vcs-url="https://github.com/strues/swerpbox" \
       maintainer="Steven Truesdell <steven@strues.io>"
 
+ARG BUILD_CORES
 ARG MEDIAINF_VER="0.7.90"
-
+ARG RTORRENT_VER="0.9.6"
+ARG LIBTORRENT_VER="0.13.6"
+ARG RUTORRENT_ADDR="https://github.com/Novik/ruTorrent/archive/master.tar.gz"
 # install runtime packages
 RUN \
   apk add --no-cache \
@@ -19,7 +21,6 @@ RUN \
     ffmpeg \
     geoip \
     gzip \
-    rtorrent \
     dtach \
     tar \
     unrar \
@@ -53,6 +54,8 @@ RUN \
   apk add --no-cache --virtual=build-deps \
     autoconf \
     automake \
+    build-base \
+    subversion \
     cppunit-dev \
     curl-dev \
     perl-dev \
@@ -63,11 +66,19 @@ RUN \
     make \
     ncurses-dev && \
 
+  cd /tmp && \
+  git clone https://github.com/esmil/mktorrent && \
+  svn checkout http://svn.code.sf.net/p/xmlrpc-c/code/stable xmlrpc-c && \
+  git clone -b ${LIBTORRENT_VER} https://github.com/rakshasa/libtorrent.git && \
+  git clone -b ${RTORRENT_VER} https://github.com/rakshasa/rtorrent.git && \
+  cd /tmp/mktorrent && \
+  make -j ${BUILD_CORES-$(grep -c "processor" /proc/cpuinfo)} && \
+  make install && \
 # install webui
- mkdir -p /var/www/public/rutorrent /defaults/rutorrent-conf && \
+  mkdir -p /var/www/public/rutorrent /defaults/rutorrent-conf && \
 # install autodl-irssi perl modules
- perl -MCPAN -e 'my $c = "CPAN::HandleConfig"; $c->load(doit => 1, autoconfig => 1); $c->edit(prerequisites_policy => "follow"); $c->edit(build_requires_install_policy => "yes"); $c->commit' && \
- curl -L http://cpanmin.us | perl - App::cpanminus && \
+  perl -MCPAN -e 'my $c = "CPAN::HandleConfig"; $c->load(doit => 1, autoconfig => 1); $c->edit(prerequisites_policy => "follow"); $c->edit(build_requires_install_policy => "yes"); $c->commit' && \
+  curl -L http://cpanmin.us | perl - App::cpanminus && \
 	cpanm HTML::Entities XML::LibXML JSON JSON::XS && \
 
 # compile mediainfo packages
@@ -100,7 +111,20 @@ RUN \
  cd /tmp/mediainfo/MediaInfo/Project/GNU/CLI && \
         make -j $(getconf _NPROCESSORS_ONLN) && \
         make install && \
-
+  cd /tmp/xmlrpc-c && \
+  ./configure && \
+  make -j ${NB_CORES} && \
+  make install && \
+  cd /tmp/libtorrent && \
+  ./autogen.sh && \
+  ./configure && \
+  make -j ${BUILD_CORES-$(grep -c "processor" /proc/cpuinfo)} && \
+  make install && \
+  cd /tmp/rtorrent && \
+  ./autogen.sh && \
+  ./configure --with-xmlrpc-c && \
+  make -j ${BUILD_CORES-$(grep -c "processor" /proc/cpuinfo)} && \
+  make install && \
 # cleanup
  apk del --purge build-deps && rm -rf /tmp/*
 
