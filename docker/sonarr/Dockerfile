@@ -1,11 +1,11 @@
 FROM swerpbox/ubuntu-base
-MAINTAINER Steven Truesdell <steven@strues.io>
 
 LABEL org.label-schema.vendor="SwerpBox: Sonarr" \
       org.label-schema.build-date="2017-01-26T00:10:00+00:00" \
       org.label-schema.name="Sonarr running on Ubuntu" \
       org.label-schema.vcs-type="git" \
-      org.label-schema.vcs-url="https://github.com/strues/swerpbox"
+      org.label-schema.vcs-url="https://github.com/strues/swerpbox" \
+      maintainer="Steven Truesdell <steven@strues.io>"
 
 ARG DEBIAN_FRONTEND="noninteractive"
 ENV XDG_CONFIG_HOME="/config/xdg"

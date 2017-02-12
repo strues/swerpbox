@@ -1,12 +1,12 @@
 FROM swerpbox/alpine-base
-MAINTAINER Steven Truesdell <steven@strues.io>
 
 ARG RUTORRENT_ADDR="https://github.com/Novik/ruTorrent/archive/master.tar.gz"
 LABEL org.label-schema.vendor="SwerpBox: rTorrent/ruTorrent" \
       org.label-schema.build-date="2017-01-29T00:12:00+00:00" \
       org.label-schema.name="rTorrent and ruTorrent running on Alpine 3.5" \
       org.label-schema.vcs-type="git" \
-      org.label-schema.vcs-url="https://github.com/strues/swerpbox"
+      org.label-schema.vcs-url="https://github.com/strues/swerpbox" \
+      maintainer="Steven Truesdell <steven@strues.io>"
 
 ARG MEDIAINF_VER="0.7.90"
 

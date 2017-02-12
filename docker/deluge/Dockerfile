@@ -1,7 +1,5 @@
 FROM swerpbox/alpine-base
 
-MAINTAINER Steven Truesdell <steven@strues.io>
-
 # environment variables
 ENV PYTHON_EGG_CACHE="/config/plugins/.python-eggs"
 
@@ -9,7 +7,8 @@ LABEL org.label-schema.vendor="SwerpBox: Deluge" \
       org.label-schema.build-date="2017-01-27T00:12:00+00:00" \
       org.label-schema.name="Deluge and Deluge-WebUI running on Alpine 3.5" \
       org.label-schema.vcs-type="git" \
-      org.label-schema.vcs-url="https://github.com/strues/swerpbox"
+      org.label-schema.vcs-url="https://github.com/strues/swerpbox" \
+      maintainer="Steven Truesdell <steven@strues.io>"
 
 # install runtime packages
 RUN \

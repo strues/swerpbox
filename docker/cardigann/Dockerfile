@@ -1,5 +1,4 @@
 FROM swerpbox/alpine-base
-MAINTAINER Steven Truesdell <steven@strues.io>
 
 ARG GOPATH=/tmp/golang
 ARG CARDIGANN_DIR=$GOPATH/src/github.com/cardigann/cardigann
@@ -11,7 +10,8 @@ LABEL org.label-schema.vendor="SwerpBox: Cardigann" \
       org.label-schema.build-date="2017-01-29T00:12:00+00:00" \
       org.label-schema.name="Cardigann running on Alpine 3.5" \
       org.label-schema.vcs-type="git" \
-      org.label-schema.vcs-url="https://github.com/strues/swerpbox"
+      org.label-schema.vcs-url="https://github.com/strues/swerpbox" \
+      maintainer="Steven Truesdell <steven@strues.io>"
 
 # install build packages
 RUN \
