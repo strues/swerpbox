@@ -1,5 +1,7 @@
 # What is SwerpBox?
 
+> **This project is archived and no longer maintained.** The source code remains available for reference.
+
 > SwerpBox, a seedbox and media center combined with the power of  🐳 Docker.
 
 
